@@ -16,7 +16,7 @@ The WhatsApp lib
 
 # Step
   1) Waiting to submit login part of the source code.  (done)
-  2) Send text message ( ing..)
+  2) Send text message 
 
 ## How to use
 Tool

@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         ((Button)findViewById(R.id.start)).setOnClickListener(this);
         ((Button)findViewById(R.id.export)).setOnClickListener(this);
+        ((Button)findViewById(R.id.start_yowsup)).setOnClickListener(this);
     }
 
     private void verifyStoragePermission(Activity activity){
@@ -115,12 +116,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        if (!checkAppInstalled("com.whatsapp")) {
+            Toast.makeText(this, "没有安装Whatsapp", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (v.getId() == R.id.start){
             startCopyEnv();
         } else if (v.getId() == R.id.export) {
             ExportDb();
+        } else if (v.getId() == R.id.start_yowsup) {
+            StartCopyYowsConfig();
         }
     }
+
 
     void ExportDb() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -147,20 +156,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    void startCopyEnv() {
-        if (!checkAppInstalled("com.whatsapp")) {
-            Toast.makeText(this, "没有安装Whatsapp", Toast.LENGTH_LONG).show();
-            return;
-        }
 
-
+    void StartCopyYowsConfig() {
         //创建目录
         String randomDir = String.format("/sdcard/Gorgeous/%d/", System.currentTimeMillis() / 1000);
         new File(randomDir).mkdirs();
-        CopyDatabases(randomDir);
+        CopyDatabasesAndExport(randomDir, 1);
     }
 
-    void CopyDatabases(String random_dir) {
+    void startCopyEnv() {
+        //创建目录
+        String randomDir = String.format("/sdcard/Gorgeous/%d/", System.currentTimeMillis() / 1000);
+        new File(randomDir).mkdirs();
+        CopyDatabasesAndExport(randomDir, 0);
+    }
+
+    void CopyDatabasesAndExport(String random_dir, int exportType) {
         //拷贝
         String dbDir = "/data/data/com.whatsapp/databases";
         try
@@ -174,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void commandCompleted(int id, int exitcode) {
                     //拷贝完成 database ，再拷贝shared_pref
-                    CopyShared(random_dir);
+                    CopyShared(random_dir, exportType);
                 }
             };
             shell.add(cmd);
@@ -185,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    void CopyShared(String random_dir){
+    void CopyShared(String random_dir, int exportType){
         String dbDir = "/data/data/com.whatsapp/shared_prefs";
         try
         {
@@ -198,7 +209,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void commandCompleted(int id, int exitcode) {
                     //JNI 拷贝文件
-                    ConvertDb(random_dir);
+                    if (exportType == 0) {
+                        ConvertDb(random_dir);
+                    } else {
+                        ExportYowsupConfig(random_dir);
+                    }
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -233,6 +248,108 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         inputStream.close();
         outputStream.close();
         return true;
+    }
+
+    void ParseKeyPair(String dir, JSONObject config) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document dom = builder.parse(new FileInputStream(new File(dir, "shared_prefs/keystore.xml")));
+            Element root = dom.getDocumentElement();
+            NodeList items = root.getElementsByTagName("string");
+            for (int i = 0; i < items.getLength(); i++) {
+                Element personNode = (Element) items.item(i);
+                String key = personNode.getAttribute("name");
+                if (key.equals("client_static_keypair_pwd_enc")){
+                    String base64Decode = stringFromJNI(personNode.getTextContent());
+                    config.put("client_static_keypair", base64Decode);
+                } else if (key.equals("server_static_public")) {
+                    config.put("server_static_public", personNode.getTextContent());
+                } else if (key.equals("client_static_keypair")) {
+                    config.put("client_static_keypair", personNode.getTextContent());
+                }
+            }
+        }
+        catch (Exception e){
+            Log.e("keystore.xm", e.getMessage());
+        }
+    }
+
+    void ParsePref(String dir,  JSONObject config) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document dom = builder.parse(new FileInputStream(new File(dir, "shared_prefs/com.whatsapp_preferences_light.xml")));
+            Element root = dom.getDocumentElement();
+            NodeList items = root.getElementsByTagName("string");
+            for (int i = 0; i < items.getLength(); i++) {
+                Element personNode = (Element) items.item(i);
+                String key = personNode.getAttribute("name");
+                String content = personNode.getTextContent();
+                if (key.equals("registration_jid")){
+                    config.put("phone", content);
+                    config.put("login", content);
+                } else if (key.equals("routing_info")){
+                    config.put("edge_routing_info", content);
+                } else if (key.equals("version")) {
+
+                } else if (key.equals("cc")) {
+                    config.put("cc", content);
+                    String countryInfo =  getCountryInfo(content);
+                    JSONObject jsonObject = new JSONObject(countryInfo);
+                    config.put("mcc", jsonObject.getString("mcc"));
+                    config.put("mnc", jsonObject.getString("mnc"));
+                    config.put("sim_mcc", jsonObject.getString("mcc"));
+                    config.put("sim_mnc", jsonObject.getString("mnc"));
+                } else if (key.equals("routing_info")) {
+                    config.put("edge_routing_info", content);
+                } else if (key.equals("phoneid_id")) {
+                   config.put("expid", content);
+                } else if (key.equals("perf_device_id")) {
+                   config.put("fdid", content);
+                    String exPid = content.substring(0, 20);
+                   config.put("id", Base64.encodeToString(exPid.getBytes(),0));
+                } else if (key.equals("push_name")) {
+                }
+            }
+        }
+        catch (Exception e){
+            Log.e("keystore.xm", e.getMessage());
+        }
+    }
+
+    void ExportYowsupConfig(String dir) {
+        /*
+                * {
+            "__version__": 1,
+            "cc": "<cc>",
+            "client_static_keypair": "base64-client_static_keypair",
+            "edge_routing_info": "base64-edge_routing_info",
+            "expid": "base64-expid",
+            "fdid": "uuid-fdid",
+            "id": "base64-id-20bytes",
+            "login": "<cc+in>",
+            "mcc": "<mcc>",
+            "mnc": "<mnc>",
+            "phone": "<cc+in>",
+            "server_static_public": "base64-server_static_public",
+            "sim_mcc": "<sim_mcc>",
+            "sim_mnc": "<sim_mnc>"
+        }```
+        * */
+        try {
+            JSONObject config = new JSONObject();
+            config.put("__version__", 1);
+            ParseKeyPair(dir, config);
+            ParsePref(dir, config);
+            mainDbPath_ = new File(dir, "config.json").getAbsolutePath();
+            FileOutputStream file = new FileOutputStream(mainDbPath_);
+            file.write(config.toString().getBytes());
+            file.close();
+        }
+        catch (Exception e) {
+
+        }
     }
 
     void ConvertDb(String dir) {
