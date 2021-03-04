@@ -35,6 +35,8 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
             System.load(System.getProperty("user.dir") + "/jni/libNoiseJni.so");
         } else if (os.startsWith("Windows")) {
             System.load(System.getProperty("user.dir") + "\\jni\\libNoiseJni.dll");
+        }  else if (os.startsWith("Mac")) {
+            System.load(System.getProperty("user.dir") + "/jni/libNoiseJni.dylib");
         }
 
         long instance = NoiseJni.CreateInstance();
