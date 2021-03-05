@@ -1,5 +1,8 @@
 package Util;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.UUID;
 
 public class StringUtil {
@@ -58,5 +61,28 @@ public class StringUtil {
             j++;
         }
         return result;
+    }
+
+    public static byte[] ReadFileContent(String path) {
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(path);
+            int len =  inputStream.available();
+            byte[] buffer = new byte[len];
+            inputStream.read(buffer);
+            return buffer;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (null != inputStream) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

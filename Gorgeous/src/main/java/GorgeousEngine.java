@@ -20,6 +20,7 @@ import org.whispersystems.libsignal.state.PreKeyRecord;
 import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -90,6 +91,14 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     AxolotlManager axolotlManager_;
     DeviceEnv.AndroidEnv.Builder envBuilder_;
     Timer pingTimer_;
+
+    static class MessageInfo {
+        String jid;
+        byte[] serialData;
+        String messageType;
+        String mediaType;
+    }
+    LinkedHashMap<String, MessageInfo> msgMap_ = new LinkedHashMap<>(100);
 
     @Override
     public void OnConnected(byte[] serverPublicKey) {
@@ -243,8 +252,8 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     }
 
     public String SendText(String jid, String content) {
-            String id = GenerateIqId();
-            GorgeousLooper.Instance().PostTask(() -> {
+        String id = GenerateIqId();
+        GorgeousLooper.Instance().PostTask(() -> {
             WhatsMessage.WhatsAppMessage.Builder builder = WhatsMessage.WhatsAppMessage.newBuilder();
             builder.setConversation(content);
             SendSerialData(jid, builder.build().toByteArray(), "text", "", id);
@@ -252,6 +261,141 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         //序列化数据
         return id;
     }
+
+    public String SendVCard(String jid, String showName, String vcard) {
+        String id = GenerateIqId();
+        GorgeousLooper.Instance().PostTask(() -> {
+            WhatsMessage.WhatsAppMessage.Builder builder = WhatsMessage.WhatsAppMessage.newBuilder();
+            WhatsMessage.WhatsAppContactMessage.Builder contactMessage =   builder.getContactMessageBuilder();
+            contactMessage.setDisplayName(showName);
+            contactMessage.setVcard(vcard);
+            SendSerialData(jid, builder.build().toByteArray(), "media", "contact", id);
+        });
+        //序列化数据
+        return id;
+    }
+
+    public String SendLocation(String jid, double latitude, double longtitude, String name, String address, String comment) {
+        String id = GenerateIqId();
+        GorgeousLooper.Instance().PostTask(() -> {
+            WhatsMessage.WhatsAppMessage.Builder builder = WhatsMessage.WhatsAppMessage.newBuilder();
+            WhatsMessage.WhatsAppLocationMessage.Builder contactMessage =   builder.getLocationMessageBuilder();
+            contactMessage.setAddress(address);
+            contactMessage.setDegreesLatitude(latitude);
+            contactMessage.setDegreesLongitude(longtitude);
+            contactMessage.setName(name);
+            contactMessage.setComment(comment);
+            SendSerialData(jid, builder.build().toByteArray(), "media", "location", id);
+        });
+        //序列化数据
+        return id;
+    }
+
+
+    //电话号码 + 开头
+    public String SyncContact(List<String> phones) {
+        ProtocolTreeNode iq = new ProtocolTreeNode("iq");
+        iq.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        iq.AddAttribute(new StanzaAttribute("xmlns", "usync"));
+        iq.AddAttribute(new StanzaAttribute("type", "get"));
+
+        ProtocolTreeNode usync = new ProtocolTreeNode("usync");
+        usync.AddAttribute(new StanzaAttribute("index", "0"));
+        usync.AddAttribute(new StanzaAttribute("last", "true"));
+        usync.AddAttribute(new StanzaAttribute("mode", "full"));
+        usync.AddAttribute(new StanzaAttribute("context", "registration"));
+        usync.AddAttribute(new StanzaAttribute("sid", "sync_sid_full_" + UUID.randomUUID().toString()));
+
+        // query 子节点
+        ProtocolTreeNode query = new ProtocolTreeNode("query");
+        query.AddChild(new ProtocolTreeNode("contact"));
+        query.AddChild(new ProtocolTreeNode("status"));
+
+        ProtocolTreeNode business = new ProtocolTreeNode("business");
+        business.AddChild(new ProtocolTreeNode("verified_name"));
+        ProtocolTreeNode profile = new ProtocolTreeNode("profile");
+        profile.AddAttribute(new StanzaAttribute("v", "4"));
+        business.AddChild(profile);
+
+        query.AddChild(business);
+        usync.AddChild(query);
+        //列表
+        ProtocolTreeNode list = new ProtocolTreeNode("list");
+        for (String phone : phones) {
+            ProtocolTreeNode user = new ProtocolTreeNode("user");
+            ProtocolTreeNode contact = new ProtocolTreeNode("contact");
+            contact.SetData(phone.getBytes(StandardCharsets.UTF_8));
+            user.AddChild(contact);
+            list.AddChild(user);
+        }
+
+        usync.AddChild(list);
+        iq.AddChild(usync);
+        return AddTask(iq, new HandleResult("SyncContact"));
+    }
+
+    public String SetHDHead(String path) {
+        ProtocolTreeNode iq = new ProtocolTreeNode("iq");
+        iq.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        iq.AddAttribute(new StanzaAttribute("xmlns", "w:profile:picture"));
+        iq.AddAttribute(new StanzaAttribute("type", "set"));
+        iq.AddAttribute(new StanzaAttribute("to", JidNormalize(envBuilder_.getFullphone())));
+
+        ProtocolTreeNode picture = new ProtocolTreeNode("picture");
+        picture.AddAttribute(new StanzaAttribute("type", "image"));
+        picture.SetData(StringUtil.ReadFileContent(path));
+
+        iq.AddChild(picture);
+        return AddTask(iq, new HandleResult("SetHDHead"));
+    }
+
+
+    public String Subscribe(String jid) {
+        ProtocolTreeNode presence = new ProtocolTreeNode("presence");
+        presence.AddAttribute(new StanzaAttribute("type", "subscribe"));
+        presence.AddAttribute(new StanzaAttribute("to", JidNormalize(jid)));
+
+        return AddTask(presence);
+    }
+
+
+    public String SetStatue(String status) {
+        ProtocolTreeNode iq = new ProtocolTreeNode("iq");
+        iq.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        iq.AddAttribute(new StanzaAttribute("xmlns", "status"));
+        iq.AddAttribute(new StanzaAttribute("type", "set"));
+        iq.AddAttribute(new StanzaAttribute("to", "s.whatsapp.net"));
+
+        ProtocolTreeNode statusNode = new ProtocolTreeNode("status");
+        statusNode.SetData(status.getBytes(StandardCharsets.UTF_8));
+
+        iq.AddChild(statusNode);
+        return AddTask(iq, new HandleResult("SetStatue"));
+    }
+
+    public String SetPushName(String pushName) {
+        ProtocolTreeNode presence = new ProtocolTreeNode("presence");
+        presence.AddAttribute(new StanzaAttribute("xmlns", "available"));
+        presence.AddAttribute(new StanzaAttribute("name", "pushName"));
+        return AddTask(presence);
+    }
+
+    public String GetHDHead(String jid) {
+        ProtocolTreeNode iq = new ProtocolTreeNode("iq");
+        iq.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        iq.AddAttribute(new StanzaAttribute("xmlns", "w:profile:picture"));
+        iq.AddAttribute(new StanzaAttribute("type", "get"));
+        iq.AddAttribute(new StanzaAttribute("to", JidNormalize(jid)));
+
+        ProtocolTreeNode picture = new ProtocolTreeNode("picture");
+        picture.AddAttribute(new StanzaAttribute("type", "image"));
+
+        iq.AddChild(picture);
+        return AddTask(iq, new HandleResult("GetHDHead"));
+    }
+
+
+
 
     void GetCdnInfo() {
         ProtocolTreeNode cdnNode = new ProtocolTreeNode("iq");
@@ -285,13 +429,20 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         });
     }
 
-    void HandleAeceipt(ProtocolTreeNode node) {
-        StanzaAttribute type = node.GetAttribute("type");
-        if (null != type) {
-            if (type.value_.equals("retry")) {
-                //需要發送retry
-            }
+
+    class HandleRetryGetKeysFor implements NodeCallback {
+        String msgId_;
+        HandleRetryGetKeysFor(String msgId) {
+            msgId_ = msgId;
         }
+        @Override
+        public void Run(ProtocolTreeNode srcNode, ProtocolTreeNode result) {
+
+        }
+    }
+
+
+    void HandleAeceipt(ProtocolTreeNode node) {
         {
             //发送确认
             ProtocolTreeNode ack = new ProtocolTreeNode("ack");
@@ -323,10 +474,22 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
             }
             AddTask(ack);
         }
+        String type = node.GetAttributeValue("type");
+        if (type.equals("retry")) {
+            LinkedList<String> jidList = new LinkedList<>();
+            String jid = node.GetAttributeValue("participant");
+            if (StringUtil.isEmpty(jid)) {
+                jidList.add(node.GetAttributeValue("from"));
+            } else {
+                jidList.add(jid);
+            }
+            GetKeysFor(jidList, new HandleRetryGetKeysFor(node.GetAttributeValue("id")));
+        }
         if (delegate_ != null) {
             delegate_.OnSync(node);
         }
     }
+
 
     byte[]  HandlePreKeyWhisperMessage(String recepid, ProtocolTreeNode encNode) throws UntrustedIdentityException, LegacyMessageException, InvalidVersionException, InvalidMessageException, DuplicateMessageException, InvalidKeyException, InvalidKeyIdException {
         byte[] result =  axolotlManager_.DecryptPKMsg(recepid, encNode.GetData());
@@ -478,14 +641,14 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         if (!StringUtil.isEmpty(participant)) {
             receipt.AddAttribute(new StanzaAttribute("participant", participant));
         }
-        receipt.AddAttribute(new StanzaAttribute("t", node.GetAttributeValue("t")));
+        receipt.AddAttribute(new StanzaAttribute("t", String.valueOf(System.currentTimeMillis() / 1000)));
 
         //retry
         ProtocolTreeNode retry = new ProtocolTreeNode("retry");
         retry.AddAttribute(new StanzaAttribute("count", String.valueOf(count)));
         retry.AddAttribute(new StanzaAttribute("v", "1"));
         retry.AddAttribute(new StanzaAttribute("id", iqid));
-        retry.AddAttribute(new StanzaAttribute("t", String.valueOf(System.currentTimeMillis() / 1000)));
+        retry.AddAttribute(new StanzaAttribute("t", node.GetAttributeValue("t")));
         receipt.AddChild(retry);
 
         //register
@@ -652,10 +815,126 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
             create.AddChild(participant);
         }
         node.AddChild(create);
-
-        return AddTask(node, new HandleResult("creategroup"));
+        return AddTask(node, new HandleResult("CreateGroup"));
     }
 
+    public String AcceptInviteToGroup(String token) {
+        ProtocolTreeNode node = new ProtocolTreeNode("iq");
+        node.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        node.AddAttribute(new StanzaAttribute("xmlns", "w:g2"));
+        node.AddAttribute(new StanzaAttribute("type", "set"));
+        node.AddAttribute(new StanzaAttribute("to", "g.us"));
+
+        ProtocolTreeNode invite = new ProtocolTreeNode("invite");
+        invite.AddAttribute(new StanzaAttribute("code", token));
+        node.AddChild(invite);
+        return AddTask(node, new HandleResult("AcceptInviteToGroup"));
+    }
+
+
+    public String ModifyGroupSubject(String jid, String subjectName) {
+        ProtocolTreeNode node = new ProtocolTreeNode("iq");
+        node.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        node.AddAttribute(new StanzaAttribute("xmlns", "w:g2"));
+        node.AddAttribute(new StanzaAttribute("type", "set"));
+        node.AddAttribute(new StanzaAttribute("to", JidNormalize(jid)));
+
+        ProtocolTreeNode subject = new ProtocolTreeNode("subject");
+        subject.SetData(subjectName.getBytes(StandardCharsets.UTF_8));
+        node.AddChild(subject);
+
+        return AddTask(node, new HandleResult("ModifyGroupSubject"));
+    }
+
+    public String InviteGroupMembers(String jid, List<String> members) {
+        ProtocolTreeNode node = new ProtocolTreeNode("iq");
+        node.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        node.AddAttribute(new StanzaAttribute("xmlns", "w:g2"));
+        node.AddAttribute(new StanzaAttribute("type", "set"));
+        node.AddAttribute(new StanzaAttribute("to", JidNormalize(jid)));
+
+        ProtocolTreeNode add = new ProtocolTreeNode("add");
+        for (String member : members) {
+            ProtocolTreeNode participant = new ProtocolTreeNode("participant");
+            participant.AddAttribute(new StanzaAttribute("jid", JidNormalize(member)));
+            add.AddChild(participant);
+        }
+        node.AddChild(add);
+        return AddTask(node, new HandleResult("InviteGroupMembers"));
+    }
+
+    public String RemoveGroupMembers(String jid, List<String> members) {
+        ProtocolTreeNode node = new ProtocolTreeNode("iq");
+        node.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        node.AddAttribute(new StanzaAttribute("xmlns", "w:g2"));
+        node.AddAttribute(new StanzaAttribute("type", "set"));
+        node.AddAttribute(new StanzaAttribute("to", JidNormalize(jid)));
+
+        ProtocolTreeNode remove = new ProtocolTreeNode("remove");
+        for (String member : members) {
+            ProtocolTreeNode participant = new ProtocolTreeNode("participant");
+            participant.AddAttribute(new StanzaAttribute("jid", JidNormalize(member)));
+            remove.AddChild(participant);
+        }
+        node.AddChild(remove);
+        return AddTask(node, new HandleResult("RemoveGroupMembers"));
+    }
+
+    public String PromoteGroupMember(String jid, List<String> members) {
+        ProtocolTreeNode node = new ProtocolTreeNode("iq");
+        node.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        node.AddAttribute(new StanzaAttribute("xmlns", "w:g2"));
+        node.AddAttribute(new StanzaAttribute("type", "set"));
+        node.AddAttribute(new StanzaAttribute("to", JidNormalize(jid)));
+
+        ProtocolTreeNode remove = new ProtocolTreeNode("promote");
+        for (String member : members) {
+            ProtocolTreeNode participant = new ProtocolTreeNode("participant");
+            participant.AddAttribute(new StanzaAttribute("jid", JidNormalize(member)));
+            remove.AddChild(participant);
+        }
+        node.AddChild(remove);
+        return AddTask(node, new HandleResult("PromoteGroupMember"));
+    }
+
+    public String DemoteGroupMember(String jid, List<String> members) {
+        ProtocolTreeNode node = new ProtocolTreeNode("iq");
+        node.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        node.AddAttribute(new StanzaAttribute("xmlns", "w:g2"));
+        node.AddAttribute(new StanzaAttribute("type", "set"));
+        node.AddAttribute(new StanzaAttribute("to", JidNormalize(jid)));
+
+        ProtocolTreeNode demote = new ProtocolTreeNode("demote");
+        for (String member : members) {
+            ProtocolTreeNode participant = new ProtocolTreeNode("participant");
+            participant.AddAttribute(new StanzaAttribute("jid", JidNormalize(member)));
+            demote.AddChild(participant);
+        }
+        node.AddChild(demote);
+        return AddTask(node, new HandleResult("DemoteGroupMember"));
+    }
+
+
+    public String LeaveGroup(List<String> groupJids) {
+        ProtocolTreeNode node = new ProtocolTreeNode("iq");
+        node.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
+        node.AddAttribute(new StanzaAttribute("xmlns", "w:g2"));
+        node.AddAttribute(new StanzaAttribute("type", "set"));
+        node.AddAttribute(new StanzaAttribute("to", "g.us"));
+
+        ProtocolTreeNode leave = new ProtocolTreeNode("leave");
+        for (String groupJid : groupJids) {
+            ProtocolTreeNode group = new ProtocolTreeNode("group");
+            group.AddAttribute(new StanzaAttribute("id", JidNormalize(groupJid)));
+            leave.AddChild(group);
+        }
+        node.AddChild(leave);
+        return AddTask(node, new HandleResult("LeaveGroup"));
+    }
+
+    String GetGroupInfo(String jid) {
+        return InnerGetGroupInfo(jid, new HandleResult("GetGroupInfo"));
+    }
 
     byte[] AdjustId(int id) {
         String hex = Integer.toHexString(id);
@@ -760,7 +1039,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 
     String AddTask(ProtocolTreeNode node, NodeCallback callback) {
         if (null != callback) {
-            registerHandleMap_.put(node.IqId(), new NodeHandleInfo(callback, node));
+        	registerHandleMap_.put(node.IqId(), new NodeHandleInfo(callback, node));
         }
         return noiseHandshake_.SendNode(node);
     }
@@ -804,6 +1083,16 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
             return jid + "@g.us";
         }
         return jid + "@s.whatsapp.net";
+    }
+
+
+    void SaveSentMessage(String jid, byte[] serialData, String messageType, String mediaType, String iqId) {
+        MessageInfo info = new MessageInfo();
+        info.jid = jid;
+        info.serialData = serialData;
+        info.messageType = messageType;
+        info.mediaType = mediaType;
+        msgMap_.put(iqId, info);
     }
 
     String SendSerialData(String jid, byte[] serialData, String messageType, String mediaType, String iqId) {
@@ -903,7 +1192,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     }
 
     void SendToGroupWithSessions(String groupId, List<String> sessionJids, byte[] message, String messageType, String mediaType, String iqId) throws UntrustedIdentityException, NoSessionException, InvalidKeyException {
-        ProtocolTreeNode partici = new ProtocolTreeNode("participants");
+        ProtocolTreeNode participants = new ProtocolTreeNode("participants");
         if (!sessionJids.isEmpty()) {
             SenderKeyDistributionMessage senderKeyDistributionMessage = axolotlManager_.GroupCreateSKMsg(groupId);
             ByteString senderKeySerial = ByteString.copyFrom(senderKeyDistributionMessage.serialize());
@@ -937,19 +1226,19 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                         encNode.AddAttribute(new StanzaAttribute("type", "msg"));
                     }
                 }
-                ProtocolTreeNode participant = new ProtocolTreeNode("participant");
-                participant.AddAttribute(new StanzaAttribute("jid",jid));
-                participant.AddChild(encNode);
-                partici.AddChild(participant);
+                ProtocolTreeNode to = new ProtocolTreeNode("to");
+                to.AddAttribute(new StanzaAttribute("jid", jid));
+                to.AddChild(encNode);
+                participants.AddChild(to);
             }
         }
-
         //组装消息
         ProtocolTreeNode msg = new ProtocolTreeNode("message");
         msg.AddAttribute(new StanzaAttribute("id", iqId));
         msg.AddAttribute(new StanzaAttribute("type", messageType));
         msg.AddAttribute(new StanzaAttribute("to", groupId));
         msg.AddAttribute(new StanzaAttribute("t", String.valueOf(System.currentTimeMillis() / 1000)));
+
 
         //添加group 消息
         ProtocolTreeNode encNode = new ProtocolTreeNode("enc");
@@ -960,7 +1249,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         }
         encNode.SetData(axolotlManager_.GroupEncrypt(groupId, message));
         msg.AddChild(encNode);
-        msg.AddChild(partici);
+        msg.AddChild(participants);
         AddTask(msg);
     }
 
@@ -989,14 +1278,6 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
             }
         }
         return iqId;
-    }
-
-
-
-
-
-    String GetGroupInfo(String jid) {
-        return InnerGetGroupInfo(jid, null);
     }
 
     String InnerGetGroupInfo(String jid, NodeCallback callback) {
