@@ -16,4 +16,8 @@ dependencies {
     compile 'org.xerial:sqlite-jdbc:3.34.0'
     compile 'io.netty:netty-all:4.1.59.Final'
     compile 'org.squirrelframework:squirrel-foundation:0.3.8'
+    compile("com.squareup.okhttp3:okhttp:4.9.0")
+    compile group: 'org.json', name: 'json', version: '20180813'
+    compile 'org.bytedeco:javacv-platform:1.5.4'
+    compile 'cn.hutool:hutool-all:5.5.9'
 }

@@ -78,7 +78,7 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
                 /*NoiseHandshake.Proxy proxy = new NoiseHandshake.Proxy();
                 proxy.server = "127.0.0.1";
                 proxy.port = 10808;*/
-                engine_ = new GorgeousEngine(System.getProperty("user.dir") + "\\out\\axolotl.db", MainDialog.this, null);
+                engine_ = new GorgeousEngine(System.getProperty("user.dir") + "\\out\\axolotl.db", MainDialog.this, null,System.getProperty("user.dir") + "/out");
                 boolean start = engine_.StartEngine();
                 if (!start) {
                     Log.i(TAG, "start engine error");

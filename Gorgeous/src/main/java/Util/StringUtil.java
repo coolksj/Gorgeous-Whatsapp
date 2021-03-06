@@ -1,5 +1,6 @@
 package Util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -84,5 +85,22 @@ public class StringUtil {
             }
         }
         return null;
+    }
+
+    public static String GetFileExt(String filePath) {
+        int index = filePath.lastIndexOf(".");
+        if (index == -1) {
+            return "";
+        }
+        return filePath.substring(index + 1);
+    }
+
+    public static String GetFileBaseName(String filePath) {
+        String fileName = new File(filePath).getName();
+        int index = fileName.lastIndexOf(".");
+        if (index == -1) {
+            return fileName;
+        }
+        return fileName.substring(0, index);
     }
 }

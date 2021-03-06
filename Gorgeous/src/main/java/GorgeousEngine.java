@@ -6,8 +6,18 @@ import ProtocolTree.StanzaAttribute;
 import Util.GorgeousLooper;
 import Util.StringUtil;
 import axolotl.AxolotlManager;
+import cn.hutool.core.img.Img;
+import cn.hutool.core.io.FileUtil;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import jni.MediaCipher;
+import okhttp3.*;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.Java2DFrameConverter;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 import org.whispersystems.libsignal.*;
 import org.whispersystems.libsignal.ecc.Curve;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
@@ -19,9 +29,17 @@ import org.whispersystems.libsignal.state.PreKeyBundle;
 import org.whispersystems.libsignal.state.PreKeyRecord;
 import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -49,10 +67,11 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 
 
     static final String TAG = GorgeousEngine.class.getName();
-    public  GorgeousEngine(String configPath, GorgeousEngineDelegate delegate, NoiseHandshake.Proxy proxy) {
+    public  GorgeousEngine(String configPath, GorgeousEngineDelegate delegate, NoiseHandshake.Proxy proxy, String tmpDir) {
         configPath_ = configPath;
         delegate_ = delegate;
         proxy_ = proxy;
+        tmpDir_ = tmpDir;
     }
 
     boolean StartEngine() {
@@ -91,6 +110,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     AxolotlManager axolotlManager_;
     DeviceEnv.AndroidEnv.Builder envBuilder_;
     Timer pingTimer_;
+    String tmpDir_;
 
     static class MessageInfo {
         String jid;
@@ -238,7 +258,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
             public void run() {
                 SendPing();
             }
-        }, 100, 4 * 60 *1000);
+        }, 100, 60 *1000);
         {
             //available
             ProtocolTreeNode available = new ProtocolTreeNode("presence");
@@ -248,8 +268,253 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     }
 
     void Test() {
-        SendPing();
+        InnerSendMedia("","E:\\v2rayN\\vpoint_vmess_freedom.json","text");
     }
+
+
+
+    boolean GetImageThumb(String path, JSONObject mediaInfo) {
+        //生成缩略图
+        String fileName = new File(path).getName();
+        File thumbnailFile =  new File(tmpDir_,  "thumbnail." + fileName);
+        Img srcImage =  Img.from(new File(path));
+        mediaInfo.put("width", srcImage.getImg().getWidth(null));
+        mediaInfo.put("height", srcImage.getImg().getHeight(null));
+        srcImage.setTargetImageType(FileUtil.extName(thumbnailFile))//
+                .scale(120, 120, null)//
+                .write(thumbnailFile);
+        mediaInfo.put( "thumbnail_path", thumbnailFile.getAbsolutePath());
+        return true;
+    }
+
+    boolean GetVideoThumb(String path, JSONObject mediaInfo) {
+        try {
+            FFmpegFrameGrabber ff = new FFmpegFrameGrabber(path);
+            ff.start();
+            mediaInfo.put("play_time", ff.getLengthInTime()/(1000*1000) + 1);
+            mediaInfo.put("width", ff.getImageWidth());
+            mediaInfo.put("height", ff.getImageHeight());
+            //这里取第一帧，有可能是黑的，可以自己调
+            Frame frame = null;
+            for (int i=0; i< ff.getLengthInFrames(); i++) {
+                frame = ff.grabFrame();
+                if (frame.image != null) {
+                    break;
+                }
+            }
+            Java2DFrameConverter converter = new Java2DFrameConverter();
+            BufferedImage bi = converter.getBufferedImage(frame);
+            Image scaledImage = bi.getScaledInstance(224, 224, Image.SCALE_DEFAULT);
+            BufferedImage scaledImageBuffer = new BufferedImage(224, 224, BufferedImage.TYPE_3BYTE_BGR);
+            scaledImageBuffer.getGraphics().drawImage(scaledImage,0, 0, null);
+
+            String fileName = new File(path).getName();
+            File thumbnailFile =  new File(tmpDir_,  "thumbnail." + fileName + ".png");
+            try {
+                ImageIO.write(scaledImageBuffer, "png", thumbnailFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ff.close();
+            mediaInfo.put("thumbnail_path" ,thumbnailFile.getAbsolutePath());
+            return true;
+        } catch (FrameGrabber.Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    String GetUserAgent() {
+        return String.format("WhatsApp/%d.%d.%d.%d Android/%s Device/%s-%s",
+                envBuilder_.getUserAgent().getAppVersion().getPrimary(),
+                envBuilder_.getUserAgent().getAppVersion().getSecondary(),
+                envBuilder_.getUserAgent().getAppVersion().getTertiary(),
+                envBuilder_.getUserAgent().getAppVersion().getQuaternary(),
+                envBuilder_.getUserAgent().getOsVersion(),
+                envBuilder_.getUserAgent().getManufacturer(),
+                envBuilder_.getUserAgent().getDevice());
+    }
+
+    public String InnerSendMedia(String jid, String path, String mediaType) {
+        if (!new File(path).exists()) {
+            return "";
+        }
+
+        String id = GenerateIqId();
+        MediaCipher.MediaEncryptInfo encryptInfo = MediaCipher.Encrypt(path, mediaType);
+        StringBuilder sb = new StringBuilder("https://");
+        sb.append(cdnHost_);
+
+        String mime;
+        JSONObject mediaInfo = new JSONObject();
+
+        switch (mediaType) {
+            case "image":{
+                mime = "image/jpeg";
+                sb.append("/mms/image");
+                GetImageThumb(path, mediaInfo);
+                break;
+            }
+            case "video" :{
+                mime = "video/mp4";
+                sb.append("/mms/video");
+                GetVideoThumb(path, mediaInfo);
+                break;
+            }
+            case "ptt": {
+                mime = "audio/ogg; codecs=opus";
+                sb.append("/mms/audio");
+                break;
+            }
+            default:{
+                sb.append("/mms/document");
+                String ext = StringUtil.GetFileExt(path);
+                if (StringUtil.isEmpty(ext)) {
+                    mime = "text/txt";
+                } else {
+                    mime = "text/" + ext;
+                }
+            }
+        }
+
+        mediaInfo.put("media_type", mediaType);
+        mediaInfo.put("mime", mime);
+        mediaInfo.put("encrypt_hash", Base64.getEncoder().encodeToString(encryptInfo.contentHash));
+        mediaInfo.put("orign_hash", Base64.getEncoder().encodeToString(encryptInfo.origHash));
+        mediaInfo.put("file_len", new File(path).length());
+        mediaInfo.put("media_key", encryptInfo.mediaKey);
+        mediaInfo.put("file_name",  new File(path).getName());
+        mediaInfo.put("title",  StringUtil.GetFileBaseName(path));
+
+
+        sb.append("/").append(encryptInfo.token).append("?").append("auth=").append(cdnAuthKey_).append("&token=").append(URLEncoder.encode(encryptInfo.token));
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(encryptInfo.data);
+        Request request = new Request.Builder()
+                .url(sb.toString())
+                .post(requestBody) //添加请求体
+                .addHeader("user-agent", GetUserAgent())
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(TAG, "upload failed :" + e.getLocalizedMessage());
+                GorgeousLooper.Instance().PostTask(() -> {
+                    if (delegate_ != null) {
+                        ProtocolTreeNode failedNode = new ProtocolTreeNode("iq");
+                        failedNode.AddAttribute(new StanzaAttribute("id", id));
+                        failedNode.AddChild(new ProtocolTreeNode("error"));
+                        delegate_.OnPacketResponse("SendMedia", failedNode);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                JSONObject res = new JSONObject(response.body().string());
+                mediaInfo.put("url", res.getString("url"));
+                mediaInfo.put("direct_path", res.getString("direct_path"));
+                InnerSendMedia(jid, mediaInfo, id);
+            }
+        });
+        return id;
+    }
+
+    void GenerateImageMessage(WhatsMessage.WhatsAppImageMessage.Builder builder, JSONObject mediaInfo) {
+        try {
+            builder.setUrl(mediaInfo.getString("url"));
+            builder.setMimetype(mediaInfo.getString("mime"));
+            builder.setFileEncSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("encrypt_hash"))));
+            builder.setFileSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("orign_hash"))));
+            builder.setFileLength(mediaInfo.getInt("file_len"));
+            builder.setCaption(mediaInfo.getString("caption"));
+            builder.setWidth(mediaInfo.getInt("width"));
+            builder.setHeight(mediaInfo.getInt("height"));
+            builder.setJpegThumbnail(ByteString.readFrom(new FileInputStream(mediaInfo.getString("thumbnail_path"))));
+            builder.setMediaKey(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("media_key"))));
+            builder.setDirectPath(mediaInfo.getString("direct_path"));
+            builder.setFirstScanLength(0);
+        }
+        catch (Exception e) {
+
+        }
+    }
+
+    void  GenerateVideoMessage(WhatsMessage.WhatsAppVideoMessage.Builder builder, JSONObject mediaInfo) {
+        try {
+            builder.setUrl(mediaInfo.getString("url"));
+            builder.setMimetype(mediaInfo.getString("mime"));
+            builder.setFileEncSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("encrypt_hash"))));
+            builder.setFileSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("orign_hash"))));
+            builder.setFileLength(mediaInfo.getInt("file_len"));
+            builder.setCaption(mediaInfo.getString("caption"));
+            builder.setWidth(mediaInfo.getInt("width"));
+            builder.setHeight(mediaInfo.getInt("height"));
+            builder.setJpegThumbnail(ByteString.readFrom(new FileInputStream(mediaInfo.getString("thumbnail_path"))));
+            builder.setMediaKey(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("media_key"))));
+            builder.setDirectPath(mediaInfo.getString("direct_path"));
+            builder.setSeconds(mediaInfo.getInt("play_time"));
+        }
+        catch (Exception e) {
+
+        }
+    }
+
+    void  GeneratePPtMessage(WhatsMessage.WhatsAppAudioMessage.Builder builder, JSONObject mediaInfo) {
+        builder.setUrl(mediaInfo.getString("url"));
+        builder.setMimetype(mediaInfo.getString("mime"));
+        builder.setFileEncSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("encrypt_hash"))));
+        builder.setFileSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("orign_hash"))));
+        builder.setFileLength(mediaInfo.getInt("file_len"));
+        builder.setMediaKey(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("media_key"))));
+        builder.setDirectPath(mediaInfo.getString("direct_path"));
+        builder.setPtt(true);
+        //硬编码
+        builder.setSeconds(5);
+    }
+
+
+    void  GenerateDocMessage(WhatsMessage.WhatsAppDocumentMessage.Builder builder, JSONObject mediaInfo) {
+        builder.setUrl(mediaInfo.getString("url"));
+        builder.setMimetype(mediaInfo.getString("mime"));
+        builder.setFileEncSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("encrypt_hash"))));
+        builder.setFileSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("orign_hash"))));
+        builder.setFileLength(mediaInfo.getInt("file_len"));
+        builder.setMediaKey(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("media_key"))));
+        builder.setDirectPath(mediaInfo.getString("direct_path"));
+        builder.setFileName(mediaInfo.getString("file_name"));
+        builder.setTitle(mediaInfo.getString("title"));
+        builder.setPageCount(0);
+    }
+
+    void InnerSendMedia(String jid, JSONObject mediaInfo, String id) {
+        GorgeousLooper.Instance().PostTask(() -> {
+            String mediaType = mediaInfo.getString("media_type");
+            WhatsMessage.WhatsAppMessage.Builder builder = WhatsMessage.WhatsAppMessage.newBuilder();
+            switch (mediaType) {
+                case "image":{
+                    GenerateImageMessage(builder.getImageMessageBuilder(), mediaInfo);
+                    break;
+                }
+                case "video":{
+                    GenerateVideoMessage(builder.getVideoMessageBuilder(), mediaInfo);
+                    break;
+                }
+                case "ptt": {
+                    GeneratePPtMessage(builder.getAudioMessageBuilder(), mediaInfo);
+                    break;
+                }
+                case "document": {
+                    GenerateDocMessage(builder.getDocumentMessageBuilder(), mediaInfo);
+                    break;
+                }
+            }
+            SendSerialData(jid, builder.build().toByteArray(), "media", mediaType, id);
+        });
+    }
+
 
     public String SendText(String jid, String content) {
         String id = GenerateIqId();
