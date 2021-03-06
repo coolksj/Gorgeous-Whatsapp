@@ -268,7 +268,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     }
 
     void Test() {
-        InnerSendMedia("","E:\\v2rayN\\vpoint_vmess_freedom.json","text");
+        SendMedia("","E:\\v2rayN\\vpoint_vmess_freedom.json","text");
     }
 
 
@@ -336,7 +336,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                 envBuilder_.getUserAgent().getDevice());
     }
 
-    public String InnerSendMedia(String jid, String path, String mediaType) {
+    public String SendMedia(String jid, String path, String mediaType) {
         if (!new File(path).exists()) {
             return "";
         }
