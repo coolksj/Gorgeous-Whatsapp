@@ -271,9 +271,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String content = personNode.getTextContent();
                 if (key.equals("registration_jid")){
                     config.put("phone", content);
-                    config.put("login", content);
-                } else if (key.equals("routing_info")){
-                    config.put("edge_routing_info", content);
                 } else if (key.equals("version")) {
 
                 } else if (key.equals("cc")) {
@@ -285,13 +282,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     config.put("sim_mcc", jsonObject.getString("mcc"));
                     config.put("sim_mnc", jsonObject.getString("mnc"));
                 } else if (key.equals("routing_info")) {
-                    config.put("edge_routing_info", content);
+                    byte[] noWrapper = Base64.decode(content, Base64.NO_WRAP);
+                    config.put("edge_routing_info", Base64.encodeToString(noWrapper, Base64.NO_WRAP));
                 } else if (key.equals("phoneid_id")) {
                    config.put("expid", content);
                 } else if (key.equals("perf_device_id")) {
                    config.put("fdid", content);
                     String exPid = content.substring(0, 20);
-                   config.put("id", Base64.encodeToString(exPid.getBytes(),0));
+                   config.put("id", Base64.encodeToString(exPid.getBytes(),Base64.NO_WRAP));
                 } else if (key.equals("push_name")) {
                 }
             }
