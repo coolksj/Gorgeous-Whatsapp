@@ -8,6 +8,14 @@
     tools:context=".MainActivity">
 
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="1) Check that the device is root\n2) Click Export\n3) Click Open Directory, or you can copy the files in the DIRECTORY\n4) Log in with Yowsup"
+        android:textSize="20sp" />
+
     <LinearLayout
         android:id="@+id/market"
         android:layout_width="match_parent"
@@ -29,7 +37,8 @@
             android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="export" />
+            android:text="export"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/start_yowsup"
@@ -43,6 +52,6 @@
         android:id="@+id/export"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="sendtome" />
+        android:text="Open Directory" />
 
 </LinearLayout>

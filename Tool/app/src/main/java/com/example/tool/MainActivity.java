@@ -6,38 +6,29 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.env.DeviceEnv;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.protobuf.ByteString;
 import com.stericson.RootShell.RootShell;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootShell.execution.Shell;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.PermissionChecker;
 
 import android.util.Base64;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,15 +38,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -74,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
-    String mainDbPath_;
+    String mainDbDir_;
 
         @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,10 +114,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     void ExportDb() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(mainDbPath_)));
-        shareIntent.setType("*/*");
-        startActivity(Intent.createChooser(shareIntent, "发送文件"));
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_GET_CONTENT);
+        File file = new File(mainDbDir_);
+        intent.setDataAndType(Uri.fromFile(file), "*/*");
+        startActivity(intent);
     }
 
     boolean checkAppInstalled(String pkgName) {
@@ -218,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             Toast.makeText(MainActivity.this, "转换完成",Toast.LENGTH_LONG).show();
-                            ((EditText)findViewById(R.id.dest_path)).setText(mainDbPath_);
+                            ((EditText)findViewById(R.id.dest_path)).setText(mainDbDir_);
                         }
                     });
                 }
@@ -342,10 +325,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             config.put("__version__", 1);
             ParseKeyPair(dir, config);
             ParsePref(dir, config);
-            mainDbPath_ = new File(dir, "config.json").getAbsolutePath();
-            FileOutputStream file = new FileOutputStream(mainDbPath_);
+            mainDbDir_ = dir;
+            FileOutputStream file = new FileOutputStream(new File(dir, "config.json"));
             file.write(config.toString().getBytes());
             file.close();
+
+            try {
+                String srcPath = new File(dir, "databases/axolotl.db").getAbsolutePath();
+                if (!new File(srcPath).exists()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, "拷贝数据库失败",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    return ;
+                }
+                String destPath = new File(dir, "axolotl.db").getAbsolutePath();
+                fileCopy(srcPath, destPath);
+            }
+            catch (Exception e){
+
+            }
         }
         catch (Exception e) {
 
@@ -404,8 +405,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         //写入账号信息
-        mainDbPath_ = new File(dir, "axolotl.db").getAbsolutePath();
-        AxolotlSQLiteOpenHelper srcDb = new AxolotlSQLiteOpenHelper(this, mainDbPath_);
+        mainDbDir_ = dir;
+        AxolotlSQLiteOpenHelper srcDb = new AxolotlSQLiteOpenHelper(this, new File(dir, "axolotl.db").getAbsolutePath());
         SQLiteDatabase writeDb = srcDb.getWritableDatabase();
         //创建config 表
         writeDb.execSQL("CREATE TABLE IF NOT EXISTS settings(key text PRIMARY KEY,value text)");
