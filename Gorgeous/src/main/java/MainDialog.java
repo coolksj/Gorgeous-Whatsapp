@@ -39,8 +39,6 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
             System.load(System.getProperty("user.dir") + "/jni/libNoiseJni.dylib");
         }
 
-        long instance = NoiseJni.CreateInstance();
-        NoiseJni.DestroyInstance(instance);
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);

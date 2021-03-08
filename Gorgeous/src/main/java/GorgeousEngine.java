@@ -36,7 +36,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
@@ -268,7 +267,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     }
 
     void Test() {
-        SendMedia("","E:\\v2rayN\\vpoint_vmess_freedom.json","text");
+        SendMedia("","E:\\v2rayN\\vpoint_vmess_freedom.json","document");
     }
 
 
@@ -332,8 +331,8 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                 envBuilder_.getUserAgent().getAppVersion().getTertiary(),
                 envBuilder_.getUserAgent().getAppVersion().getQuaternary(),
                 envBuilder_.getUserAgent().getOsVersion(),
-                envBuilder_.getUserAgent().getManufacturer(),
-                envBuilder_.getUserAgent().getDevice());
+                envBuilder_.getUserAgent().getManufacturer().replace("-", ""),
+                envBuilder_.getUserAgent().getDevice().replace("-", ""));
     }
 
     public String SendMedia(String jid, String path, String mediaType) {
@@ -345,7 +344,6 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         MediaCipher.MediaEncryptInfo encryptInfo = MediaCipher.Encrypt(path, mediaType);
         StringBuilder sb = new StringBuilder("https://");
         sb.append(cdnHost_);
-
         String mime;
         JSONObject mediaInfo = new JSONObject();
 
@@ -367,7 +365,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                 sb.append("/mms/audio");
                 break;
             }
-            default:{
+            case "document" :{
                 sb.append("/mms/document");
                 String ext = StringUtil.GetFileExt(path);
                 if (StringUtil.isEmpty(ext)) {
@@ -375,6 +373,10 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                 } else {
                     mime = "text/" + ext;
                 }
+                break;
+            }
+            default:{
+             return "";
             }
         }
 
@@ -388,13 +390,15 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         mediaInfo.put("title",  StringUtil.GetFileBaseName(path));
 
 
-        sb.append("/").append(encryptInfo.token).append("?").append("auth=").append(cdnAuthKey_).append("&token=").append(URLEncoder.encode(encryptInfo.token));
-        OkHttpClient client = new OkHttpClient();
+            sb.append("/").append(encryptInfo.token).append("?")
+                    .append("auth=").append(cdnAuthKey_)
+                    .append("&token=").append(encryptInfo.token);
+        OkHttpClient client = new OkHttpClient().newBuilder().hostnameVerifier((s, sslSession) -> true).build();
         RequestBody requestBody = RequestBody.create(encryptInfo.data);
         Request request = new Request.Builder()
                 .url(sb.toString())
                 .post(requestBody) //添加请求体
-                .addHeader("user-agent", GetUserAgent())
+                .addHeader("User-Agent", GetUserAgent())
                 .build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
@@ -405,7 +409,9 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                     if (delegate_ != null) {
                         ProtocolTreeNode failedNode = new ProtocolTreeNode("iq");
                         failedNode.AddAttribute(new StanzaAttribute("id", id));
-                        failedNode.AddChild(new ProtocolTreeNode("error"));
+                        ProtocolTreeNode error = new ProtocolTreeNode("error");
+                        error.AddAttribute(new StanzaAttribute("desc", e.getLocalizedMessage()));
+                        failedNode.AddChild(error);
                         delegate_.OnPacketResponse("SendMedia", failedNode);
                     }
                 });
@@ -413,10 +419,24 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                JSONObject res = new JSONObject(response.body().string());
-                mediaInfo.put("url", res.getString("url"));
-                mediaInfo.put("direct_path", res.getString("direct_path"));
-                InnerSendMedia(jid, mediaInfo, id);
+                Log.d(TAG, response.toString());
+                if (response.code() != 200) {
+                    GorgeousLooper.Instance().PostTask(() -> {
+                        if (delegate_ != null) {
+                            ProtocolTreeNode failedNode = new ProtocolTreeNode("iq");
+                            failedNode.AddAttribute(new StanzaAttribute("id", id));
+                            ProtocolTreeNode error = new ProtocolTreeNode("error");
+                            error.AddAttribute(new StanzaAttribute("desc", response.toString()));
+                            failedNode.AddChild(error);
+                            delegate_.OnPacketResponse("SendMedia", failedNode);
+                        }
+                    });
+                } else {
+                    JSONObject res = new JSONObject(response.body().string());
+                    mediaInfo.put("url", res.getString("url"));
+                    mediaInfo.put("direct_path", res.getString("direct_path"));
+                    InnerSendMedia(jid, mediaInfo, id);
+                }
             }
         });
         return id;
@@ -429,7 +449,6 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
             builder.setFileEncSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("encrypt_hash"))));
             builder.setFileSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("orign_hash"))));
             builder.setFileLength(mediaInfo.getInt("file_len"));
-            builder.setCaption(mediaInfo.getString("caption"));
             builder.setWidth(mediaInfo.getInt("width"));
             builder.setHeight(mediaInfo.getInt("height"));
             builder.setJpegThumbnail(ByteString.readFrom(new FileInputStream(mediaInfo.getString("thumbnail_path"))));
@@ -438,7 +457,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
             builder.setFirstScanLength(0);
         }
         catch (Exception e) {
-
+            Log.e(TAG, "image:" + e.getLocalizedMessage());
         }
     }
 
@@ -449,7 +468,6 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
             builder.setFileEncSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("encrypt_hash"))));
             builder.setFileSha256(ByteString.copyFrom(Base64.getDecoder().decode(mediaInfo.getString("orign_hash"))));
             builder.setFileLength(mediaInfo.getInt("file_len"));
-            builder.setCaption(mediaInfo.getString("caption"));
             builder.setWidth(mediaInfo.getInt("width"));
             builder.setHeight(mediaInfo.getInt("height"));
             builder.setJpegThumbnail(ByteString.readFrom(new FileInputStream(mediaInfo.getString("thumbnail_path"))));
@@ -458,7 +476,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
             builder.setSeconds(mediaInfo.getInt("play_time"));
         }
         catch (Exception e) {
-
+            Log.e(TAG, "video:" + e.getLocalizedMessage());
         }
     }
 
