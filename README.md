@@ -14,9 +14,13 @@ The WhatsApp lib
 
  3) Log in with the extracted account information.
 
-# Step
-  1) Waiting to submit login part of the source code.  (done)
+# Step (All is complete)
+  1) login
   2) Send text message 
+  3) Send media message(video, audio,image, document ...)
+  4) Receive message(text, media ...)
+  5) group (create, join, leave ...)
+  6) presence
 
 ## How to use
 Tool
