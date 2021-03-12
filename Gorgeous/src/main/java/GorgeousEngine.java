@@ -747,14 +747,6 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                     ack.AddAttribute(new StanzaAttribute("participant", value));
                 }
             }
-
-            {
-                //list
-                LinkedList<ProtocolTreeNode> list =  node.GetChildren("list");
-                for (ProtocolTreeNode child : list) {
-                    ack.AddChild(child);
-                }
-            }
             AddTask(ack);
         }
         String type = node.GetAttributeValue("type");
@@ -1283,7 +1275,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                 {
                     ProtocolTreeNode idNode = new ProtocolTreeNode("id");
                     idNode.SetData(AdjustId(record.getId()));
-                    key.AddChild(idNode);
+                    key.AddChild(idNode);h
                 }
                 {
                     ProtocolTreeNode value = new ProtocolTreeNode("value");
