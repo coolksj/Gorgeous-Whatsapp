@@ -1275,7 +1275,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                 {
                     ProtocolTreeNode idNode = new ProtocolTreeNode("id");
                     idNode.SetData(AdjustId(record.getId()));
-                    key.AddChild(idNode);h
+                    key.AddChild(idNode);
                 }
                 {
                     ProtocolTreeNode value = new ProtocolTreeNode("value");
