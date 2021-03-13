@@ -617,6 +617,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         return AddTask(iq, new HandleResult("SyncContact"));
     }
 
+    //640*640
     public String SetHDHead(String path) {
         ProtocolTreeNode iq = new ProtocolTreeNode("iq");
         iq.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
@@ -659,7 +660,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     public String SetPushName(String pushName) {
         ProtocolTreeNode presence = new ProtocolTreeNode("presence");
         presence.AddAttribute(new StanzaAttribute("xmlns", "available"));
-        presence.AddAttribute(new StanzaAttribute("name", "pushName"));
+        presence.AddAttribute(new StanzaAttribute("name", pushName));
         return AddTask(presence);
     }
 

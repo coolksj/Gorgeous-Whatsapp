@@ -75,6 +75,9 @@ public class ProtocolTreeNode {
     }
 
     public ProtocolTreeNode GetChild(String name) {
+        if (children_ == null) {
+            return null;
+        }
         for (ProtocolTreeNode child : children_) {
             if (child.GetTag().equals(name)) {
                 return child;
