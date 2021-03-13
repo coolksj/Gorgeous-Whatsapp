@@ -659,7 +659,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 
     public String SetPushName(String pushName) {
         ProtocolTreeNode presence = new ProtocolTreeNode("presence");
-        presence.AddAttribute(new StanzaAttribute("xmlns", "available"));
+        presence.AddAttribute(new StanzaAttribute("type", "available"));
         presence.AddAttribute(new StanzaAttribute("name", pushName));
         return AddTask(presence);
     }
