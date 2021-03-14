@@ -215,7 +215,7 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
             public void actionPerformed(ActionEvent actionEvent) {
                 //proxyType :  "socks5" or "http"
                 String status = NoiseJni.CheckWhatsappVersion("", "",0,"","");
-                if (!status.equals("status")) {
+                if (!status.equals("success")) {
                     Log.e(TAG, status);
                 }
             }
