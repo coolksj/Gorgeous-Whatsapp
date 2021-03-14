@@ -39,6 +39,8 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
         GorgeousLooper.Instance().Init();
         String os = System.getProperty("os.name");
         if (os.startsWith("Linux")) {
+            //sudo apt install libssl-dev
+            //sudo apt-get install curl libcurl4-openssl-dev
             System.load(System.getProperty("user.dir") + "/jni/libNoiseJni.so");
         } else if (os.startsWith("Windows")) {
             System.load(System.getProperty("user.dir") + "\\jni\\libNoiseJni.dll");

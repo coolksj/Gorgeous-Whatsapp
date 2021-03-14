@@ -14,6 +14,11 @@ The WhatsApp lib
 
  3) Log in with the extracted account information.
 
+
+#Linux
+	sudo apt install libssl-dev
+	sudo apt-get install curl libcurl4-openssl-dev
+
 # Step (All is complete)
   1) login
   2) Send text message 
