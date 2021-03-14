@@ -1016,8 +1016,13 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 
         if (plainText != null) {
             try {
-                WhatsMessage.WhatsAppMessage msg = WhatsMessage.WhatsAppMessage.parseFrom(plainText);
-                Log.d(TAG, "接收消息:" + msg.toString());
+				if (null != delegate_) {
+                	WhatsMessage.WhatsAppMessage msg = WhatsMessage.WhatsAppMessage.parseFrom(plainText);              
+                    ProtocolTreeNode plainTextNode = new ProtocolTreeNode("plain");
+                    plainTextNode.SetData(msg.toByteArray());
+                    node.AddChild(plainTextNode);
+                    delegate_.OnSync(node);
+                }
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
             }

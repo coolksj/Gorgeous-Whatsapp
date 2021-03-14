@@ -17,7 +17,9 @@ import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 import org.whispersystems.libsignal.util.KeyHelper;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
+import java.io.File;
 import java.util.Base64;
 import java.util.Date;
 
@@ -25,13 +27,20 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
     private static final String TAG = MainDialog.class.getSimpleName();
     private JPanel contentPane;
     private JButton buttonOK;
-    private JButton buttonCancel;
     private JButton login;
     private JButton logout;
     private JButton checkexist;
     private JButton requestcode;
     private JButton register;
     private JButton checkWhatsappVersion;
+    private JTextArea history;
+    private JTextField friend;
+    private JTextArea sendcontent;
+    private JButton selpicture;
+    private JButton selvideo;
+    private JButton selfile;
+    private JButton 调试面试Button;
+    private JTextArea debugpanel;
     GorgeousEngine engine_;
 
 
@@ -55,7 +64,6 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         }
 
-        setLocationRelativeTo(null);
         SignalProtocolLoggerProvider.setProvider(this);
 
         setContentPane(contentPane);
@@ -64,13 +72,12 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
+                if (null == engine_) {
+                    debugpanel.append("需要先登录");
+                    debugpanel.append("\r\n");
+                    return;
+                }
+                engine_.SendText(friend.getText(), sendcontent.getText());
             }
         });
 
@@ -91,17 +98,36 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                engine_ = new GorgeousEngine(System.getProperty("user.dir") + "/out/axolotl.db", MainDialog.this, null, System.getProperty("user.dir") + "/out");
-                boolean start = engine_.StartEngine();
-                if (!start) {
-                    Log.i(TAG, "start engine error");
+                // 创建一个默认的文件选取器
+                JFileChooser fileChooser = new JFileChooser();
+                // 设置默认显示的文件夹为当前文件夹
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/out/"));
+                // 设置文件选择的模式（只选文件、只选文件夹、文件和文件均可选）
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                // 设置是否允许多选
+                fileChooser.setMultiSelectionEnabled(false);
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    // 如果点击了"确定", 则获取选择的文件路径
+                    File file = fileChooser.getSelectedFile();
+                    engine_ = new GorgeousEngine( file.getAbsolutePath(), MainDialog.this, null, System.getProperty("user.dir") + "/out");
+                    boolean start = engine_.StartEngine();
+                    if (!start) {
+                        Log.i(TAG, "start engine error");
+                    }
                 }
             }
         });
         logout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                if (null == engine_) {
+                    debugpanel.append("还没有登陆");
+                    debugpanel.append("\r\n");
+                    return;
+                }
                 engine_.StopEngine();
+                engine_ = null;
             }
         });
         checkexist.addActionListener(new ActionListener() {
@@ -218,6 +244,8 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
                 if (!status.equals("success")) {
                     Log.e(TAG, status);
                 }
+                history.append(status);
+                history.append("\r\n");
             }
         });
         requestcode.addActionListener(new ActionListener() {
@@ -337,6 +365,86 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
                 }
             }
         });
+        selpicture.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (null == engine_) {
+                    debugpanel.append("需要先登录");
+                    debugpanel.append("\r\n");
+                    return;
+                }
+                // 创建一个默认的文件选取器
+                JFileChooser fileChooser = new JFileChooser();
+                // 设置默认显示的文件夹为当前文件夹
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/out/"));
+                // 设置文件选择的模式（只选文件、只选文件夹、文件和文件均可选）
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fileChooser.setFileFilter(new FileNameExtensionFilter("图片文件(*.png, *.jpeg)", "png", "jpeg"));
+                // 设置是否允许多选
+                fileChooser.setMultiSelectionEnabled(false);
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    // 如果点击了"确定", 则获取选择的文件路径
+                    File file = fileChooser.getSelectedFile();
+                    engine_.SendMedia(friend.getText(), file.getAbsolutePath(), "image");
+                }
+            }
+        });
+        selvideo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (null == engine_) {
+                    debugpanel.append("需要先登录");
+                    debugpanel.append("\r\n");
+                    return;
+                }
+                // 创建一个默认的文件选取器
+                JFileChooser fileChooser = new JFileChooser();
+                // 设置默认显示的文件夹为当前文件夹
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/out/"));
+                // 设置文件选择的模式（只选文件、只选文件夹、文件和文件均可选）
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fileChooser.setFileFilter(new FileNameExtensionFilter("视频文件(*.mp4)", "mp4"));
+                // 设置是否允许多选
+                fileChooser.setMultiSelectionEnabled(false);
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    // 如果点击了"确定", 则获取选择的文件路径
+                    File file = fileChooser.getSelectedFile();
+                    engine_.SendMedia(friend.getText(), file.getAbsolutePath(), "video");
+                }
+            }
+        });
+        selfile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (null == engine_) {
+                    debugpanel.append("需要先登录");
+                    debugpanel.append("\r\n");
+                    return;
+                }
+                // 创建一个默认的文件选取器
+                JFileChooser fileChooser = new JFileChooser();
+                // 设置默认显示的文件夹为当前文件夹
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/out/"));
+                // 设置文件选择的模式（只选文件、只选文件夹、文件和文件均可选）
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                // 设置是否允许多选
+                fileChooser.setMultiSelectionEnabled(false);
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    // 如果点击了"确定", 则获取选择的文件路径
+                    File file = fileChooser.getSelectedFile();
+                    engine_.SendMedia(friend.getText(), file.getAbsolutePath(), "document");
+                }
+            }
+        });
+        调试面试Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                debugpanel.setVisible(!debugpanel.isVisible());
+            }
+        });
     }
 
     String GetUserAgent(DeviceEnv.AndroidEnv.Builder envBuilder) {
@@ -350,11 +458,6 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
                 envBuilder.getUserAgent().getDevice().replace("-", ""));
     }
 
-    private void onOK() {
-        // add your code here
-        dispose();
-    }
-
     private void onCancel() {
         // add your code here if necessary
         dispose();
@@ -363,32 +466,39 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
     public static void main(String[] args) {
         MainDialog dialog = new MainDialog();
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+
         System.exit(0);
     }
 
     @Override
     public void log(int priority, String tag, String message) {
-        System.out.println(tag + "--" + new Date().toString() +  message);
+        debugpanel.append(message);
+        debugpanel.append("\r\n");
     }
 
     @Override
     public void OnLogin(int code, ProtocolTreeNode desc) {
-        Log.i(TAG, "OnLogin:" + code + " desc:" + desc);
+        history.append(desc.toString());
+        history.append("\r\n");
     }
 
     @Override
     public void OnDisconnect(String desc) {
-        Log.i(TAG, "OnDisconnect:" + desc);
+        history.append(desc);
+        history.append("\r\n");
     }
 
     @Override
     public void OnSync(ProtocolTreeNode content) {
-
+        history.append(content.toString());
+        history.append("\r\n");
     }
 
     @Override
     public void OnPacketResponse(String type, ProtocolTreeNode content) {
-
+        history.append(content.toString());
+        history.append("\r\n");
     }
 }

@@ -4,6 +4,8 @@ The WhatsApp lib
     Yowsup is no longer updated. There is no WhatsApp library available, but many people need it. I will gradually open source the library I have used for a long time. This library is written in Java. Will include all features except registration. Because the registration part is not in the scope of this open source.
 
 
+![首页](https://github.com/lovethiscode/Gorgeous-Whatsapp/blob/main/images/%E9%A6%96%E9%A1%B5.png)
+
 # How to log in
 
  First of all, you need to have an account. This account can be exported from the mobile phone or simulator by using tools. What you export is a database file, which contains all the necessary information of the account. The phone and emulator must be root, otherwise they cannot be exported. The tools will be open source
