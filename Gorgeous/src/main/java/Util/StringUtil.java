@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.UUID;
 
 public class StringUtil {
@@ -102,5 +103,15 @@ public class StringUtil {
             return fileName;
         }
         return fileName.substring(0, index);
+    }
+
+    public static String Base64UrlEncode(byte[] data, int pos, int len) {
+        byte[] dest = new byte[len];
+        System.arraycopy(data, pos, dest, 0, len);
+        return Base64.getUrlEncoder().encodeToString(dest);
+    }
+
+    public static String Base64UrlEncode(byte[] data) {
+        return Base64.getUrlEncoder().encodeToString(data);
     }
 }

@@ -74,15 +74,15 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     }
 
     boolean StartEngine() {
-        axolotlManager_ = new AxolotlManager(configPath_);
+        axolotlManager_ = new AxolotlManager(configPath_, null);
         try {
             byte[] envBuffer =  axolotlManager_.GetBytesSetting("env");
             envBuilder_ = DeviceEnv.AndroidEnv.parseFrom(envBuffer).toBuilder();
             Env.DeviceEnv.AppVersion.Builder useragentBuilder = envBuilder_.getUserAgentBuilder().getAppVersionBuilder();
             useragentBuilder.setPrimary(2);
             useragentBuilder.setSecondary(21);
-            useragentBuilder.setTertiary(3);
-            useragentBuilder.setQuaternary(20);
+            useragentBuilder.setTertiary(5);
+            useragentBuilder.setQuaternary(14);
             noiseHandshake_ = new NoiseHandshake(this, proxy_);
             noiseHandshake_.StartNoiseHandShake( envBuilder_.build());
             return true;
@@ -643,6 +643,15 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     }
 
 
+    public String UnSubscribe(String jid) {
+        ProtocolTreeNode presence = new ProtocolTreeNode("presence");
+        presence.AddAttribute(new StanzaAttribute("type", "unsubscribe"));
+        presence.AddAttribute(new StanzaAttribute("to", JidNormalize(jid)));
+
+        return AddTask(presence);
+    }
+
+
     public String SetStatue(String status) {
         ProtocolTreeNode iq = new ProtocolTreeNode("iq");
         iq.AddAttribute(new StanzaAttribute("id", GenerateIqId()));
@@ -748,6 +757,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
                     ack.AddAttribute(new StanzaAttribute("participant", value));
                 }
             }
+
             AddTask(ack);
         }
         String type = node.GetAttributeValue("type");
@@ -1212,7 +1222,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         return InnerGetGroupInfo(jid, new HandleResult("GetGroupInfo"));
     }
 
-    byte[] AdjustId(int id) {
+    static byte[] AdjustId(int id) {
         String hex = Integer.toHexString(id);
         if (hex.length() % 2 != 0) {
             hex = "0" + hex;
@@ -1625,7 +1635,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 
     private GorgeousEngineDelegate delegate_ = null;
     String GenerateIqId() {
-        return String.format("%s:%d", idPrex_, iqidIndex_.incrementAndGet());
+        return String.format("%d:%s", iqidIndex_.incrementAndGet(), idPrex_);
     }
     String idPrex_ = UUID.randomUUID().toString().replaceAll("-", "").substring(0,28);
     AtomicInteger iqidIndex_ = new AtomicInteger(0);

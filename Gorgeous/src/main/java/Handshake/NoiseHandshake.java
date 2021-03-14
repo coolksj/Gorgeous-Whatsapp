@@ -279,6 +279,10 @@ public class NoiseHandshake {
     }
 
     void HandleReceivePacket(byte[] body) {
+        if (0 == noiseHandshakeState_) {
+            Log.e(TAG, "noiseHandshakeState_ null");
+            return;
+        }
         byte[] recvBuffer = NoiseJni.Decrypt(noiseHandshakeState_, body);
         if (recvBuffer.length > 0) {
             ProtocolTreeNode node =  ProtocolNodeJni.Decode(recvBuffer);
@@ -403,6 +407,10 @@ public class NoiseHandshake {
         GorgeousLooper.Instance().CheckThread();
         Log.d(TAG, "start HandshakeXX");
         noiseHandshakeState_ = NoiseJni.CreateInstance();
+        if (noiseHandshakeState_  == 0) {
+            Log.e(TAG, "check whatsapp version NoiseJni.CheckWhatsappVersion");
+            return;
+        }
         //开始握手
         NoiseJni.StartHandshakeXX(noiseHandshakeState_, env_.getClientStaticKeyPair().getStrPrivateKey().toByteArray(), env_.getClientStaticKeyPair().getStrPubKey().toByteArray());
 
@@ -420,6 +428,10 @@ public class NoiseHandshake {
         GorgeousLooper.Instance().CheckThread();
         Log.d(TAG, "start HandshakeIK");
         noiseHandshakeState_ = NoiseJni.CreateInstance();
+        if (noiseHandshakeState_  == 0) {
+            Log.e(TAG, "check whatsapp version NoiseJni.CheckWhatsappVersion");
+            return;
+        }
         NoiseJni.StartHandshakeIK(noiseHandshakeState_, env_.getClientStaticKeyPair().getStrPrivateKey().toByteArray(),env_.getClientStaticKeyPair().getStrPubKey().toByteArray(),env_.getServerStaticPublic().toByteArray());
         //组装状态机
         UntypedStateMachineBuilder builder = StateMachineBuilderFactory.create(HandshakeIKStateMachine.class);

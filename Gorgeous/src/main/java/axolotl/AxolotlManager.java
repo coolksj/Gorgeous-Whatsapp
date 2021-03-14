@@ -42,7 +42,7 @@ public class AxolotlManager {
 
     static final int COUNT_GEN_PREKEYS = 812;
 
-    public AxolotlManager(String dbPath) {
+    public AxolotlManager(String dbPath, byte[] newEnv) {
         try{
             boolean dbExist = new File(dbPath).exists();
             //连接数据库
@@ -62,6 +62,10 @@ public class AxolotlManager {
             fastRatchetSenderKeyStore_ = new SignalFastRatchetSenderKeyStore(this);
             configStore_ = new ConfigStore(this);
             groupSessionBuilder_ = new GroupSessionBuilder(senderKeyStore_);
+
+            if (newEnv != null) {
+                SetBytesSetting("env", newEnv);
+            }
 
             byte[] envBuffer =  GetBytesSetting("env");
             DeviceEnv.AndroidEnv.Builder builder = DeviceEnv.AndroidEnv.parseFrom(envBuffer).toBuilder();
