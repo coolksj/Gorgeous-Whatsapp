@@ -1,4 +1,7 @@
 # Gorgeous
+
+<a href="https://paypal.me/gorgeous007" target="_blank"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" /></a>
+
 The WhatsApp lib
 
     Yowsup is no longer updated. There is no WhatsApp library available, but many people need it. I will gradually open source the library I have used for a long time. This library is written in Java. Will include all features except registration. Because the registration part is not in the scope of this open source.
