@@ -20,6 +20,9 @@ The WhatsApp lib
  3) Log in with the extracted account information.
 
 
+# warning
+    To avoid version discrepancies, call the NoiseJni.CheckWhatsappVersion function once to check the version
+
 #Linux
 	sudo apt install libssl-dev
 	sudo apt-get install curl libcurl4-openssl-dev
