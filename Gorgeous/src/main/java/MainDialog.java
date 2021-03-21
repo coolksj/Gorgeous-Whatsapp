@@ -1,4 +1,5 @@
 import Env.DeviceEnv;
+import Gorgeous.GorgeousEngine;
 import ProtocolTree.*;
 import Util.GorgeousLooper;
 import Util.StringUtil;
@@ -21,7 +22,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
 import java.io.File;
 import java.util.Base64;
-import java.util.Date;
 
 public class MainDialog extends JDialog implements SignalProtocolLogger, GorgeousEngine.GorgeousEngineDelegate {
     private static final String TAG = MainDialog.class.getSimpleName();
@@ -39,8 +39,8 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
     private JButton selpicture;
     private JButton selvideo;
     private JButton selfile;
-    private JButton 调试面试Button;
     private JTextArea debugpanel;
+    private JScrollPane debugscrollpane;
     GorgeousEngine engine_;
 
 
@@ -109,6 +109,9 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
                 int result = fileChooser.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     // 如果点击了"确定", 则获取选择的文件路径
+                    if (null != engine_) {
+                        engine_.StopEngine();
+                    }
                     File file = fileChooser.getSelectedFile();
                     engine_ = new GorgeousEngine( file.getAbsolutePath(), MainDialog.this, null, System.getProperty("user.dir") + "/out");
                     boolean start = engine_.StartEngine();
@@ -233,7 +236,6 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
         register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                engine_.Test();
             }
         });
         checkWhatsappVersion.addActionListener(new ActionListener() {
@@ -439,12 +441,6 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
                 }
             }
         });
-        调试面试Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                debugpanel.setVisible(!debugpanel.isVisible());
-            }
-        });
     }
 
     String GetUserAgent(DeviceEnv.AndroidEnv.Builder envBuilder) {
@@ -479,8 +475,8 @@ public class MainDialog extends JDialog implements SignalProtocolLogger, Gorgeou
     }
 
     @Override
-    public void OnLogin(int code, ProtocolTreeNode desc) {
-        history.append(desc.toString());
+    public void OnLogin(int code, String full, ProtocolTreeNode desc) {
+        history.append(full + " :" +  desc.toString());
         history.append("\r\n");
     }
 

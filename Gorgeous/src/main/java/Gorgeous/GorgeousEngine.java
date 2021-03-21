@@ -1,3 +1,5 @@
+package Gorgeous;
+
 import Env.DeviceEnv;
 import Handshake.NoiseHandshake;
 import Message.WhatsMessage;
@@ -44,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     public interface GorgeousEngineDelegate {
-        public void OnLogin(int code, ProtocolTreeNode desc);
+        public void OnLogin(int code, String fullPhone, ProtocolTreeNode desc);
         public void OnDisconnect(String desc);
         public void OnSync(ProtocolTreeNode content);
         public void OnPacketResponse(String type, ProtocolTreeNode content);
@@ -73,7 +75,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         tmpDir_ = tmpDir;
     }
 
-    boolean StartEngine() {
+    public boolean StartEngine() {
         axolotlManager_ = new AxolotlManager(configPath_, null);
         try {
             byte[] envBuffer =  axolotlManager_.GetBytesSetting("env");
@@ -93,7 +95,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         }
     }
 
-    void StopEngine() {
+    public void StopEngine() {
         if (noiseHandshake_ != null) {
             noiseHandshake_.StopNoiseHandShake();
             noiseHandshake_ = null;
@@ -231,7 +233,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 
     void HandleFailure(ProtocolTreeNode node) {
         if (null != delegate_) {
-            delegate_.OnLogin(-1 , node);
+            delegate_.OnLogin(-1 , envBuilder_.getFullphone(),  node);
         }
     }
 
@@ -247,7 +249,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 
     void HandleSuccess(ProtocolTreeNode node) {
         if (null != delegate_) {
-            delegate_.OnLogin(0 , node);
+            delegate_.OnLogin(0 ,envBuilder_.getFullphone(), node);
         }
 
         GetCdnInfo();
@@ -1019,7 +1021,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 				if (null != delegate_) {
                 	WhatsMessage.WhatsAppMessage msg = WhatsMessage.WhatsAppMessage.parseFrom(plainText);              
                     ProtocolTreeNode plainTextNode = new ProtocolTreeNode("plain");
-                    plainTextNode.SetData(msg.toByteArray());
+                    plainTextNode.SetCustomParams(msg);
                     node.AddChild(plainTextNode);
                     delegate_.OnSync(node);
                 }
@@ -1227,7 +1229,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         return InnerGetGroupInfo(jid, new HandleResult("GetGroupInfo"));
     }
 
-    static byte[] AdjustId(int id) {
+    public static byte[] AdjustId(int id) {
         String hex = Integer.toHexString(id);
         if (hex.length() % 2 != 0) {
             hex = "0" + hex;
@@ -1246,7 +1248,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         return baKeyword;
     }
 
-    int DeAdjustId(byte[] data) {
+    public int DeAdjustId(byte[] data) {
         //转成16进制
         String hex = StringUtil.BytesToHex(data);
         return new BigInteger(hex, 16).intValue();
@@ -1595,7 +1597,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         try {
             ciphertextMessage = axolotlManager_.Encrypt(recepid, message);
             return SendEncMessage(jid ,ciphertextMessage.serialize(), ciphertextMessage.getType(),messageType, mediaType, iqId);
-        } catch (UntrustedIdentityException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return iqId;
@@ -1640,9 +1642,9 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
 
     private GorgeousEngineDelegate delegate_ = null;
     String GenerateIqId() {
-        return String.format("%d:%s", iqidIndex_.incrementAndGet(), idPrex_);
+        return String.format("%04d:%s", iqidIndex_.incrementAndGet(), idPrex_);
     }
-    String idPrex_ = UUID.randomUUID().toString().replaceAll("-", "").substring(0,28);
+    String idPrex_ = UUID.randomUUID().toString().replaceAll("-", "").substring(0,27);
     AtomicInteger iqidIndex_ = new AtomicInteger(0);
     String cdnAuthKey_;
     String cdnHost_;
