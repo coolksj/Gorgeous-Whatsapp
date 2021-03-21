@@ -21,7 +21,8 @@ The WhatsApp lib
 
 
 # warning
-    To avoid version discrepancies, call the NoiseJni.CheckWhatsappVersion function once to check the version
+    Application will visit https://www.whatsapp.com/android/ to check the version of whatsapp, please confirm whether your network can normal connection, try again or set agent.
+    To avoid version discrepancies, call the NoiseJni.CheckWhatsappVersion function once to check the version. 
 
 #Linux
 	sudo apt install libssl-dev
