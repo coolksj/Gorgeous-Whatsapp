@@ -276,23 +276,26 @@ public class ChatController implements Initializable {
         userConfig.UpdateContactHead(jid, picture.GetData());
         User user = GetFriend(jid);
         if (user != null) {
-                user.picture = picture.GetData();
-            }
+            user.picture = picture.GetData();
+            userList.refresh();
         }
+    }
 
     void  HandlePresence(ProtocolTreeNode content) {
         String jid = content.GetAttributeValue("from");
         User user = GetFriend(jid);
         if (user != null) {
-                String type = content.GetAttributeValue("type");
-                if (type.equals("available")) {
-                    user.online = true;
-                } else {
-                    user.online = false;
-                    user.last = content.GetAttributeValue("last");
-                }
+            String type = content.GetAttributeValue("type");
+            if (type.equals("unavailable")) {
+                user.online = false;
+                user.last = content.GetAttributeValue("last");
+            } else {
+                user.online = true;
             }
         }
+        userList.refresh();
+        UpdateOnlineFriendCount();
+    }
 
     void HandleAddContact(ProtocolTreeNode content) {
         ProtocolTreeNode usync = content.GetChild("usync");
