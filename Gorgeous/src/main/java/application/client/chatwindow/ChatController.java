@@ -1,9 +1,11 @@
 package application.client.chatwindow;
 
+import Gorgeous.GorgeousEngine;
 import Message.WhatsMessage;
 import ProtocolTree.ProtocolTreeNode;
 import ProtocolTree.StanzaAttribute;
 import Util.StringUtil;
+import application.GorgeousConfig;
 import application.client.StageFactory;
 import application.UserConfig;
 import application.client.login.LoginController;
@@ -35,6 +37,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.whispersystems.libsignal.logging.Log;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -60,7 +63,8 @@ public class ChatController implements Initializable {
     @FXML BorderPane borderPane;
 
     UserConfig userConfig;
-
+    String selfFullPhone;
+    String selfJid;
 
     private double xOffset;
     private double yOffset;
@@ -76,6 +80,8 @@ public class ChatController implements Initializable {
 
     
     public void setUsernameLabel(String fullPhone) {
+        selfFullPhone = fullPhone;
+        selfJid = GorgeousEngine.JidNormalize(fullPhone);
         String fullPath = new File(System.getProperty("user.dir") + "/out", fullPhone + "_user.db").getAbsolutePath();
         userConfig = new UserConfig(fullPath);
         this.usernameLabel.setText(userConfig.GetPushName());
@@ -265,6 +271,13 @@ public class ChatController implements Initializable {
         return null;
     }
 
+    void UpdateSelfHead(ProtocolTreeNode content) {
+        ProtocolTreeNode picture = content.GetChild("picture");
+        userConfig.UpdateHead(picture.GetData());
+        InputStream buffin = new ByteArrayInputStream(picture.GetData());
+        userImageView.setImage(new Image(buffin));
+        GorgeousConfig.Instance().UpdateHead(selfFullPhone, picture.GetData());
+    }
 
     void HandleGetHead(ProtocolTreeNode content) {
         ProtocolTreeNode picture = content.GetChild("picture");
@@ -273,6 +286,11 @@ public class ChatController implements Initializable {
         }
 
         String jid = content.GetAttributeValue("from");
+        if (jid.equals(jid)) {
+            UpdateSelfHead(content);
+            return;
+        }
+
         userConfig.UpdateContactHead(jid, picture.GetData());
         User user = GetFriend(jid);
         if (user != null) {
@@ -425,5 +443,19 @@ public class ChatController implements Initializable {
 
     public void OnMouseEntered(MouseEvent mouseEvent) {
         userImageView.setCursor(Cursor.HAND);
+    }
+
+    public void DeleteSession(User user) {
+        //delete from userlist
+        userList.getItems().remove(user);
+        userConfig.DeleteContact(user.jid);
+        Tab chatTab = chatTabMap.get(user.jid);
+        if (chatTab != null) {
+            chatPans.getTabs().remove(chatTab);
+        }
+    }
+
+    public void OnRefreshHead(ActionEvent actionEvent) {
+        LoginController.getInstance().GetEngine().GetHDHead(selfJid);
     }
 }

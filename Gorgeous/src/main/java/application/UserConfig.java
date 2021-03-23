@@ -134,7 +134,15 @@ public class UserConfig {
         }
         catch (Exception e){
         }
-
     }
 
+    public void DeleteContact(String jid) {
+        try {
+            PreparedStatement preparedStatement = connection_.prepareStatement("delete from friends where jid = ?");
+            preparedStatement.setString(1, jid);
+            preparedStatement.execute();
+        }
+        catch (Exception e){
+        }
+    }
 }

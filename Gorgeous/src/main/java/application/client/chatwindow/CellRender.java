@@ -94,19 +94,13 @@ class CellRender implements Callback<ListView<User>,ListCell<User>>{
     void ShowMenu(HBox hBox ,MouseEvent event, User user) {
         ContextMenu contextMenu = new ContextMenu();
         // 菜单项
-        MenuItem redBg = new MenuItem("黑底白色");
-        redBg.setOnAction(new EventHandler<ActionEvent>() {
+        MenuItem deleteMenu = new MenuItem("Delete");
+        deleteMenu.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-
+                ChatController.getInstance().DeleteSession(user);
             }
         });
-        // 菜单项
-        MenuItem blueBg = new MenuItem("白底黑字");
-        blueBg.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-            }
-        });
-        contextMenu.getItems().addAll(redBg, blueBg);
+        contextMenu.getItems().addAll(deleteMenu);
         contextMenu.show(hBox, event.getScreenX(), event.getScreenY());
     }
 }

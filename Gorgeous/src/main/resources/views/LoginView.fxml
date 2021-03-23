@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
@@ -25,41 +23,20 @@
             <RowConstraints maxHeight="126.0" minHeight="12.0" prefHeight="35.0" />
             <RowConstraints maxHeight="96.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="127.0" minHeight="0.0" prefHeight="36.0" valignment="CENTER" />
-            <RowConstraints maxHeight="110.0" minHeight="9.0" prefHeight="11.0" />
          </rowConstraints>
          <children>
             <Button id="connectBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginButtonAction" stylesheets="@../styles/Login.css" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="87.0" text="Config:" textAlignment="CENTER" textFill="#f89406" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
             <TextField fx:id="usernameTextfield" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <StackPane GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <ImageView fx:id="Defaultview" fitHeight="93" fitWidth="93" pickOnBounds="true" preserveRatio="true">
+
+                  <ImageView fx:id="Defaultview" fitHeight="93" fitWidth="93" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/default.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="Sarahview" fitHeight="93.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image preserveRatio="false" smooth="false" url="@../images/sarah.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="Dominicview" fitHeight="93.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image preserveRatio="false" smooth="true" url="@../images/dominic.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </StackPane>
             <ChoiceBox fx:id="imagePicker" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <items>
-                  <FXCollections fx:factory="observableArrayList">
-                     <String fx:value="Default" />
-                     <String fx:value="Dominic" />
-                     <String fx:value="Sarah" />
-                  </FXCollections>
-               </items>
+
                     </ChoiceBox>
-            <Label fx:id="selectedPicture" text="Label" GridPane.rowIndex="1" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Button id="MinimizedBtn" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxHeight="24.0" maxWidth="68.0" minWidth="45.0" mnemonicParsing="false" onAction="#minimizeWindow" prefHeight="24.0" prefWidth="45.0" stylesheets="@../styles/Login.css">

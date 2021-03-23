@@ -84,9 +84,18 @@
                   </ImageView>
                   <VBox>
                      <HBox.margin>
-                        <Insets left="10.0" top="30.0" />
+                        <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                      <children>
+                        <Button fx:id="refreshHead" mnemonicParsing="false" onAction="#OnRefreshHead" stylesheets="@../styles/ButtonStyle.css">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/refresh_white.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                         <Label fx:id="usernameLabel" onMouseClicked="#OnNameClicked" text="Dominic Heal" textFill="#fa6648">
                            <font>
                               <Font name="HelveticaNeue Medium" size="14.0" />

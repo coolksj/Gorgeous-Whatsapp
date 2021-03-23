@@ -5,6 +5,7 @@ import Gorgeous.GorgeousEngine;
 import ProtocolTree.ProtocolTreeNode;
 import Util.GorgeousLooper;
 import Util.StringUtil;
+import application.GorgeousConfig;
 import application.client.chatwindow.ChatController;
 import application.client.util.ResizeHelper;
 import javafx.animation.KeyFrame;
@@ -21,6 +22,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -35,9 +37,11 @@ import org.whispersystems.libsignal.logging.SignalProtocolLogger;
 import org.whispersystems.libsignal.logging.SignalProtocolLoggerProvider;
 
 import javax.swing.*;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -47,11 +51,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class LoginController implements Initializable, GorgeousEngine.GorgeousEngineDelegate, SignalProtocolLogger {
     @FXML private ImageView Defaultview;
-    @FXML private ImageView Sarahview;
-    @FXML private ImageView Dominicview;
     @FXML private TextField usernameTextfield;
     @FXML private ChoiceBox imagePicker;
-    @FXML private Label selectedPicture;
     public static ChatController con;
     @FXML private BorderPane borderPane;
     private double xOffset;
@@ -97,13 +98,19 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
         return  engine;
     }
     public void loginButtonAction() throws IOException {
+        /*FXMLLoader fmxlLoader = new FXMLLoader(getClass().getResource("/views/ChatView.fxml"));
+        Parent window = (Pane) fmxlLoader.load();
+        con = fmxlLoader.<ChatController>getController();
+        this.scene = new Scene(window);
+        showScene("84862988210");*/
+
         if (!checkVersion.get()) {
             //check you can visit  https://www.whatsapp.com/android/
             showErrorDialog("CheckWhatsappVersion failed, check your network");
             return;
         }
-
-
+		
+        
         String username = usernameTextfield.getText();
         if (StringUtil.isEmpty(username)) {
             showErrorDialog("you must select config");
@@ -145,10 +152,6 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        imagePicker.getSelectionModel().selectFirst();
-        selectedPicture.textProperty().bind(imagePicker.getSelectionModel().selectedItemProperty());
-        selectedPicture.setVisible(false);
-
         /* Drag and Drop */
         borderPane.setOnMousePressed(event -> {
             xOffset = MainLauncher.getPrimaryStage().getX() - event.getScreenX();
@@ -165,36 +168,26 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
         borderPane.setOnMouseReleased(event -> {
             borderPane.setCursor(Cursor.DEFAULT);
         });
+        List<GorgeousConfig.User> users = GorgeousConfig.Instance().GetUsers();
+        imagePicker.getItems().addAll(users);
+        if (!users.isEmpty()) {
+            imagePicker.getSelectionModel().selectFirst();
+            GorgeousConfig.User firstUser = users.get(0);
+            if (firstUser.head != null) {
+                Defaultview.setImage(new Image(new ByteArrayInputStream(firstUser.head)));
+            }
+            usernameTextfield.setText(firstUser.path);
+        }
 
-        imagePicker.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        imagePicker.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GorgeousConfig.User>() {
             @Override
-            public void changed(ObservableValue<? extends String> selected, String oldPicture, String newPicture) {
-                if (oldPicture != null) {
-                    switch (oldPicture) {
-                        case "Default":
-                            Defaultview.setVisible(false);
-                            break;
-                        case "Dominic":
-                            Dominicview.setVisible(false);
-                            break;
-                        case "Sarah":
-                            Sarahview.setVisible(false);
-                            break;
-                    }
-                }
-                if (newPicture != null) {
-                    switch (newPicture) {
-                        case "Default":
-                            Defaultview.setVisible(true);
-                            break;
-                        case "Dominic":
-                            Dominicview.setVisible(true);
-                            break;
-                        case "Sarah":
-                            Sarahview.setVisible(true);
-                            break;
-                    }
-                }
+            public void changed(ObservableValue<? extends GorgeousConfig.User> selected, GorgeousConfig.User oldPhone, GorgeousConfig.User newPhone) {
+               if (newPhone.head != null) {
+                   Defaultview.setImage(new Image(new ByteArrayInputStream(newPhone.head)));
+               } else {
+                   Defaultview.setImage(new Image(getClass().getClassLoader().getResource("images/default.png").toString()));
+               }
+                usernameTextfield.setText(newPhone.path);
             }
         });
         int numberOfSquares = 30;
@@ -286,6 +279,7 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning!");
             alert.setHeaderText(message);
+            alert.setContentText("Please check for firewall issues and check if the server is running.");
             alert.showAndWait();
         });
 
@@ -304,6 +298,9 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
     public void OnLogin(int code, String fullPhone, ProtocolTreeNode desc) {
         borderPane.setDisable(false);
         if (0 == code) {
+            //save
+            GorgeousConfig.Instance().SaveUser(fullPhone, usernameTextfield.getText());
+
             try {
                 FXMLLoader fmxlLoader = new FXMLLoader(getClass().getResource("/views/ChatView.fxml"));
                 Parent window = (Pane) fmxlLoader.load();

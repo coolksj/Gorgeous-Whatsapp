@@ -1366,7 +1366,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
         }
     }
 
-    String JidNormalize(String jid) {
+    public static String JidNormalize(String jid) {
         int pos = jid.indexOf("@");
         if (pos != -1) {
             return jid;

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -18,9 +19,22 @@
          <HBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </HBox.margin></ImageView>
-      <Label fx:id="name" text="name" />
-      <Label prefWidth="20.0" />
-      <Label fx:id="last" alignment="CENTER_RIGHT" textAlignment="RIGHT" />
+      <VBox>
+         <children>
+            <Label fx:id="name" text="name" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="last" alignment="CENTER_RIGHT" contentDisplay="CENTER" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin></Label>
+         </children>
+      </VBox>
       <Button fx:id="refreshHead" mnemonicParsing="false" stylesheets="@../styles/ButtonStyle.css">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -30,6 +44,7 @@
          </graphic>
          <HBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </HBox.margin></Button>
+         </HBox.margin>
+      </Button>
    </children>
 </HBox>
