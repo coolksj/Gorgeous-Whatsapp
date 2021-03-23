@@ -5,9 +5,19 @@
 The WhatsApp lib
 
     Yowsup is no longer updated. There is no WhatsApp library available, but many people need it. I will gradually open source the library I have used for a long time. This library is written in Java. Will include all features except registration. Because the registration part is not in the scope of this open source.
+# If this code is useful for you, please give me a STAR
 
+# login
+![main](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/main.png)
 
-![首页](https://github.com/lovethiscode/Gorgeous-Whatsapp/blob/main/images/%E9%A6%96%E9%A1%B5.png)
+# addcontact
+![addcontact](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/addcontact.png)
+
+# updatehead
+![updatehead](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/updatehead.png)
+
+# sendmessage
+![sendmessage](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/sendmessage.png)
 
 # How to log in
 
