@@ -11,6 +11,11 @@
                 <ListView fx:id="chatPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
             </content>
         </ScrollPane>
+      <HBox prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#OnSelectImage" text="Image" />
+         </children>
+      </HBox>
         <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" VBox.vgrow="NEVER">
             <children>
                 <TextArea fx:id="messageBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" onKeyPressed="#sendMethod" prefHeight="16.0" prefWidth="698.0" promptText="Enter Message..." scaleShape="false" wrapText="true" HBox.hgrow="ALWAYS">

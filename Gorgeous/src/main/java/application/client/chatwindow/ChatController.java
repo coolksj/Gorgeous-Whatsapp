@@ -107,10 +107,6 @@ public class ChatController implements Initializable {
         }
     }
 
-    public void setOnlineLabel(String usercount) {
-        Platform.runLater(() -> onlineCountLabel.setText(usercount));
-    }
-
     public void setUserList() {
         ObservableList<User> users = FXCollections.observableList(friends);
         userList.setItems(users);
@@ -226,6 +222,8 @@ public class ChatController implements Initializable {
 
                 userConfig.SaveContact(jid, name, "");
                 userList.getItems().add(userItem);
+
+                LoginController.getInstance().GetEngine().Subscribe(jid);
             }
 
             //add chat pane
@@ -258,7 +256,7 @@ public class ChatController implements Initializable {
     private void HandleSetHead(ProtocolTreeNode content) {
         String type = content.GetAttributeValue("type");
         if (!type.equals("result")) {
-            ToastUtil.toast("set head failed:  only support（640*640");
+            ToastUtil.toast("set head failed:  only support(640*640)");
         }
     }
 

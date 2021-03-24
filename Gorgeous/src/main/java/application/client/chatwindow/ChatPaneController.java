@@ -9,6 +9,7 @@ import application.messages.User;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -17,7 +18,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
@@ -120,5 +124,19 @@ public class ChatPaneController implements Initializable  {
             textMsg.content = conversion;
         }
         chatPane.getItems().add(textMsg);
+    }
+
+    public void OnSelectImage(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("SendImage");
+
+        FileChooser.ExtensionFilter imageFilter =   new FileChooser.ExtensionFilter("Image (.jpg,.jpeg,.png)", "*.jpg", "*.jpeg", "*.png");
+        fileChooser.getExtensionFilters().add(imageFilter);
+
+        fileChooser.setSelectedExtensionFilter(imageFilter);
+        File file = fileChooser.showOpenDialog(messageBox.getScene().getWindow());
+        if (file != null) {
+            LoginController.getInstance().GetEngine().SendMedia(user_.jid, file.getAbsolutePath(), "image");
+        }
     }
 }

@@ -93,7 +93,6 @@ class CellRender implements Callback<ListView<User>,ListCell<User>>{
 
     void ShowMenu(HBox hBox ,MouseEvent event, User user) {
         ContextMenu contextMenu = new ContextMenu();
-        // 菜单项
         MenuItem deleteMenu = new MenuItem("Delete");
         deleteMenu.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
