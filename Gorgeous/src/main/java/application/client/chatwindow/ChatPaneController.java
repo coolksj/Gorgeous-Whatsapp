@@ -139,4 +139,18 @@ public class ChatPaneController implements Initializable  {
             LoginController.getInstance().GetEngine().SendMedia(user_.jid, file.getAbsolutePath(), "image");
         }
     }
+
+    public void OnSelectVideo(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("SendImage");
+
+        FileChooser.ExtensionFilter imageFilter =   new FileChooser.ExtensionFilter("Video (.mp4)", "*.mp4");
+        fileChooser.getExtensionFilters().add(imageFilter);
+
+        fileChooser.setSelectedExtensionFilter(imageFilter);
+        File file = fileChooser.showOpenDialog(messageBox.getScene().getWindow());
+        if (file != null) {
+            LoginController.getInstance().GetEngine().SendMedia(user_.jid, file.getAbsolutePath(), "video");
+        }
+    }
 }

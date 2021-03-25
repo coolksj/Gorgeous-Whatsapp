@@ -14,6 +14,7 @@
       <HBox prefWidth="200.0">
          <children>
             <Button mnemonicParsing="false" onAction="#OnSelectImage" text="Image" />
+            <Button mnemonicParsing="false" onAction="#OnSelectVideo" text="Video" />
          </children>
       </HBox>
         <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" VBox.vgrow="NEVER">

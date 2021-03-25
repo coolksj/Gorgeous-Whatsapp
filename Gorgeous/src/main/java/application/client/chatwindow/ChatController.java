@@ -82,7 +82,13 @@ public class ChatController implements Initializable {
     public void setUsernameLabel(String fullPhone) {
         selfFullPhone = fullPhone;
         selfJid = GorgeousEngine.JidNormalize(fullPhone);
-        String fullPath = new File(System.getProperty("user.dir") + "/out", fullPhone + "_user.db").getAbsolutePath();
+
+        File dataDir = new File(System.getProperty("user.dir"), "database");
+        if (!dataDir.exists()) {
+            dataDir.mkdirs();
+        }
+
+        String fullPath = new File(dataDir, fullPhone + "_user.db").getAbsolutePath();
         userConfig = new UserConfig(fullPath);
         this.usernameLabel.setText(userConfig.GetPushName());
 
@@ -193,10 +199,6 @@ public class ChatController implements Initializable {
             }
         });
     }
-
-
-
-
 
     private void HandleRecvMessage(ProtocolTreeNode content) {
         ProtocolTreeNode plain = content.GetChild("plain");
@@ -420,7 +422,6 @@ public class ChatController implements Initializable {
     public void OnUploadHead(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a JPG image with a resolution of 640* 640 and a size of less than 100KB.");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/out/"));
 
         FileChooser.ExtensionFilter imageFilter =   new FileChooser.ExtensionFilter("JPG Image (.jpg,.jpeg)", "*.jpg", "*.jpeg");
         fileChooser.getExtensionFilters().add(imageFilter);

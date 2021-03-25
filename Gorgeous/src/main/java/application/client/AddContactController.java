@@ -39,7 +39,6 @@ public class AddContactController {
 
     public void OnSelectFile(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/out/"));
         File file = fileChooser.showOpenDialog(filePath.getScene().getWindow());
         if (file != null) {
             filePath.setText(file.getAbsolutePath());
