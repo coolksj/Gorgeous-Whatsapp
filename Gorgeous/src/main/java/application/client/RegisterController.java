@@ -9,23 +9,26 @@ import com.google.protobuf.ByteString;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import jni.Register;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import org.json.JSONObject;
+import org.whispersystems.libsignal.logging.Log;
 import org.whispersystems.libsignal.state.SignedPreKeyRecord;
 
 import java.io.File;
 import java.util.Base64;
 
 public class RegisterController {
+    private static final String TAG = RegisterController.class.getName();
     public TextField cc;
     public TextField phone;
     public TextField smsCode;
     public Button registerBtn;
     public Button codeRequestBtn;
-    public TextField configPath;
+    public TextArea configPath;
 
     AxolotlManager axolotlManager;
     Thread registerThread;
@@ -64,7 +67,7 @@ public class RegisterController {
 
             String finalDesc = desc;
             int finalCode = code;
-            Platform.runLater(() -> HandleResult(finalCode,finalDesc));
+            Platform.runLater(() -> HandleCodeRequestResult(finalCode,finalDesc));
         });
         registerThread.start();
     }
@@ -106,22 +109,33 @@ public class RegisterController {
                         .get().build();
                 OkHttpClient okHttpClient = new OkHttpClient().newBuilder().hostnameVerifier((s, sslSession) -> true).build();;
                 Response response = okHttpClient.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    DeviceEnv.AndroidEnv.Builder envBuilder = DeviceEnv.AndroidEnv.parseFrom(axolotlManager.GetBytesSetting("env")).toBuilder();
+                int code = -1;
+                String desc ="";
+                do {
+                    if (!response.isSuccessful()) {
+                        desc = "request failed";
+                        break;
+                    }
                     JSONObject responseJson = new JSONObject(response.body().string());
                     String status = responseJson.getString("status");
-                    if (status.equals("ok")) {
-                        envBuilder.setEdgeRoutingInfo(ByteString.copyFrom(Base64.getDecoder().decode(responseJson.getString("edge_routing_info"))));
-                        String chatDnsDomain = responseJson.getString("chat_dns_domain");
-                        if (StringUtil.isEmpty(chatDnsDomain)) {
-                            envBuilder.setChatDnsDomain("fb");
-                        } else {
-                            envBuilder.setChatDnsDomain(chatDnsDomain);
-                        }
-                        axolotlManager.SetBytesSetting("env", envBuilder.build().toByteArray());
-                        Platform.runLater(() -> ToastUtil.toast("register success, try login"));
+                    if (!status.equals("ok")) {
+                        desc = response.body().string();
+                        break;
                     }
-                }
+                    DeviceEnv.AndroidEnv.Builder envBuilder = DeviceEnv.AndroidEnv.parseFrom(axolotlManager.GetBytesSetting("env")).toBuilder();
+                    envBuilder.setEdgeRoutingInfo(ByteString.copyFrom(Base64.getDecoder().decode(responseJson.getString("edge_routing_info"))));
+                    String chatDnsDomain = responseJson.getString("chat_dns_domain");
+                    if (StringUtil.isEmpty(chatDnsDomain)) {
+                        envBuilder.setChatDnsDomain("fb");
+                    } else {
+                        envBuilder.setChatDnsDomain(chatDnsDomain);
+                    }
+                    axolotlManager.SetBytesSetting("env", envBuilder.build().toByteArray());
+                    code = 0;
+                } while (false);
+                int finalCode = code;
+                String finalDesc = desc;
+                Platform.runLater(() -> HandleRegisterResult(finalCode, finalDesc));
             }
             catch (Exception e) {
 
@@ -130,8 +144,18 @@ public class RegisterController {
         registerThread.start();
     }
 
+    void HandleRegisterResult(int code, String desc) {
+        if (code == 0) {
+            ToastUtil.toast("success, try login");
+        } else {
+            registerBtn.setDisable(false);
+            Log.e(TAG, desc);
+            ToastUtil.toast(desc);
+        }
+    }
 
-    void  HandleResult(int code ,String desc) {
+
+    void HandleCodeRequestResult(int code , String desc) {
         ToastUtil.toast(desc);
         codeRequestBtn.setDisable(false);
         smsCode.setText("");

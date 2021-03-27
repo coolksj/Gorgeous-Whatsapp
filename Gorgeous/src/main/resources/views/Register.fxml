@@ -30,7 +30,7 @@
             <Button fx:id="codeRequestBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#OnClickCodeRequest" text="CodeRequest" GridPane.rowIndex="5" />
             <Button fx:id="registerBtn" disable="true" mnemonicParsing="false" onAction="#OnClickRegister" text="Register" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label text="configPath" GridPane.rowIndex="3" />
-            <TextField fx:id="configPath" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextArea fx:id="configPath" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
          <opaqueInsets>
             <Insets />
