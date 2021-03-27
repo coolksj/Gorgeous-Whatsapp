@@ -68,7 +68,6 @@ public class ChatController implements Initializable {
 
     private double xOffset;
     private double yOffset;
-    Logger logger = LoggerFactory.getLogger(ChatController.class);
     static ChatController instance;
     public ChatController() {
         instance = this;

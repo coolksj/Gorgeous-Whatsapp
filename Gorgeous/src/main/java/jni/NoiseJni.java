@@ -2,7 +2,7 @@ package jni;
 
 public class NoiseJni {
 
-    public static native  String CheckWhatsappVersion(String proxyType, String proxyServer, int port, String userName, String password);
+    public static native  String CheckWhatsappVersion(String proxyType, String proxyServer, int port, String userName, String password, String jniDir);
 
     public static native long CreateInstance();
     public static native void DestroyInstance(long instance);

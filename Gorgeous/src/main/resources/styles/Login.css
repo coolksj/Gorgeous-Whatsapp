@@ -48,7 +48,7 @@
 }
 
 
-#selectBtn{
+#selectBtn,#register {
     -fx-color: #ffffff;
     -fx-padding: 5px 20px;
     -fx-background-color: linear-gradient(to bottom, #ffe49e 0%,#ffb700 3%,#ffad00 35%,#ff9000 97%,#e27f00 100%);
@@ -58,12 +58,12 @@
     cursor: pointer;
     -fx-opacity: 1;
 }
-#selectBtn:hover{
+#selectBtn:hover, #register:hover{
     -fx-cursor: hand;
     -fx-opacity: 0.5;
 }
 
-#selectBtn:pressed{
+#selectBtn:pressed, #register:pressed {
     -fx-opacity: 1;
     -fx-padding: 5px 20px;
     -fx-spacing: 10px;

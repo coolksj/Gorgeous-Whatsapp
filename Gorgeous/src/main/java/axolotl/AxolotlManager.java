@@ -42,7 +42,7 @@ public class AxolotlManager {
 
     static final int COUNT_GEN_PREKEYS = 812;
 
-    public AxolotlManager(String dbPath, byte[] newEnv) {
+    public AxolotlManager(String dbPath) {
         try{
             boolean dbExist = new File(dbPath).exists();
             //连接数据库
@@ -63,13 +63,12 @@ public class AxolotlManager {
             configStore_ = new ConfigStore(this);
             groupSessionBuilder_ = new GroupSessionBuilder(senderKeyStore_);
 
-            if (newEnv != null) {
-                SetBytesSetting("env", newEnv);
-            }
 
             byte[] envBuffer =  GetBytesSetting("env");
-            DeviceEnv.AndroidEnv.Builder builder = DeviceEnv.AndroidEnv.parseFrom(envBuffer).toBuilder();
-            userName_ = builder.getFullphone();
+            if (null != envBuffer) {
+                DeviceEnv.AndroidEnv.Builder builder = DeviceEnv.AndroidEnv.parseFrom(envBuffer).toBuilder();
+                userName_ = builder.getFullphone();
+            }
         }
         catch (Exception e){
             System.err.println(e.getMessage());
@@ -208,6 +207,10 @@ public class AxolotlManager {
 
     public void SetBytesSetting(String key, byte[] value) {
         configStore_.SetBytes(key ,value);
+    }
+
+    public void SetStringSetting(String key, String value) {
+        configStore_.SetSetting(key, value);
     }
 
     public byte[] GetBytesSetting(String key) {

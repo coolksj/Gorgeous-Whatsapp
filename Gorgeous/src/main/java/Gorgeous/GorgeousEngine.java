@@ -76,7 +76,7 @@ public class GorgeousEngine implements NoiseHandshake.HandshakeNotify {
     }
 
     public boolean StartEngine() {
-        axolotlManager_ = new AxolotlManager(configPath_, null);
+        axolotlManager_ = new AxolotlManager(configPath_);
         try {
             byte[] envBuffer =  axolotlManager_.GetBytesSetting("env");
             envBuilder_ = DeviceEnv.AndroidEnv.parseFrom(envBuffer).toBuilder();

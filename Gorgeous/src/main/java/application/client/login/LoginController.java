@@ -6,6 +6,7 @@ import ProtocolTree.ProtocolTreeNode;
 import Util.GorgeousLooper;
 import Util.StringUtil;
 import application.GorgeousConfig;
+import application.client.StageFactory;
 import application.client.chatwindow.ChatController;
 import application.client.util.ResizeHelper;
 import javafx.animation.KeyFrame;
@@ -60,7 +61,7 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
     private Scene scene;
     GorgeousEngine engine;
     AtomicBoolean checkVersion = new AtomicBoolean(false);
-
+    static String tmpDir = System.getProperty("user.dir") + "/out";
 
     private static LoginController instance;
 
@@ -80,13 +81,18 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
 
         new Thread(() -> {
             //proxyType :  "socks5" or "http"
-            String status = NoiseJni.CheckWhatsappVersion("", "",0,"","");
+            String status = NoiseJni.CheckWhatsappVersion("", "",0,"","", new File(System.getProperty("user.dir"), "jni").getAbsolutePath());
             if (!status.equals("success")) {
                 showErrorDialog(status);
             } else {
                 checkVersion.set(true);
             }
         }).start();
+        File tmpDirFile = new File(tmpDir);
+        if (!tmpDirFile.isDirectory()) {
+            tmpDirFile.delete();
+            tmpDirFile.mkdirs();
+        }
         instance = this;
     }
 
@@ -119,7 +125,7 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
         if (null != engine) {
             engine.StopEngine();
         }
-        engine = new GorgeousEngine(username, this, null, System.getProperty("user.dir") + "/out");
+        engine = new GorgeousEngine(username, this, null, tmpDir);
         boolean start = engine.StartEngine();
         if (!start) {
             engine.StopEngine();
@@ -279,7 +285,6 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning!");
             alert.setHeaderText(message);
-            alert.setContentText("Please check for firewall issues and check if the server is running.");
             alert.showAndWait();
         });
 
@@ -287,7 +292,6 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
 
     public void selectButtonAction(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/out/"));
         File file = fileChooser.showOpenDialog(usernameTextfield.getScene().getWindow());
         if (file != null) {
             usernameTextfield.setText(file.getAbsolutePath());
@@ -339,5 +343,11 @@ public class LoginController implements Initializable, GorgeousEngine.GorgeousEn
     @Override
     public void log(int priority, String tag, String message) {
         System.out.println(message);
+    }
+
+    public void OnClickRegister(ActionEvent actionEvent) {
+        Stage addContact = StageFactory.Create("/views/Register.fxml", 411, 199, "Register");
+        addContact.setResizable(false);
+        addContact.show();
     }
 }
