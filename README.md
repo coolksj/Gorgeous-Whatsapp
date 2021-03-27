@@ -7,6 +7,37 @@ The WhatsApp lib
     Yowsup is no longer updated. There is no WhatsApp library available, but many people need it. I will gradually open source the library I have used for a long time. This library is written in Java. Will include all features except registration. Because the registration part is not in the scope of this open source.
 # If this code is useful for you, please give me a STAR
 
+
+
+# How to log in
+You have two ways to log in
+  ## 1) Use Gorgeous to register an account that may be blocked.
+  
+  ## 2) Use the emulator or mobile phone (root) to register the account, and then use the tool to extract the login configuration file.
+
+# Register use Gorgeous(First Method)
+##  1) Opening the program will automatically jump to the login page and click the registration button.
+![clickreg](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/clickreg.png)
+
+## 2) Enter the country code and phone number and click on CodeQuest.
+![coderequest](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/coderequest.png)
+
+## 3) Enter the SMS verification code and click Register
+![inputcode](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/inputcode.png)
+
+## 4) After successful registration, jump to the main page and select configuration file to log in
+
+# Extract from device(Second Method)
+ If you already have an account on your Android phone or emulator, you can simply extract the environment and log in.
+
+## 1) Install APK to mobile phone or simulator. (whatsapp_config_tool.apk)
+
+## 2) To make sure the device is root, click Export (Gorgeous)
+![click_export](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/click_export.png)
+
+## 3) Save the extracted configuration file to the computer (axolotl.db), you can change the file name arbitrarily;
+
+
 # login
 ![main](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/main.png)
 
@@ -19,15 +50,6 @@ The WhatsApp lib
 # sendmessage
 ![sendmessage](https://raw.githubusercontent.com/lovethiscode/Gorgeous-Whatsapp/main/images/sendmessage.png)
 
-# How to log in
-
- First of all, you need to have an account. This account can be exported from the mobile phone or simulator by using tools. What you export is a database file, which contains all the necessary information of the account. The phone and emulator must be root, otherwise they cannot be exported. The tools will be open source
-
- 1) Use the emulator or mobile phone to register a WhatsApp account. The emulator and mobile phone need to have root permission.
-
- 2) After successful registration, install the extraction tool (APK) to extract account information. The extraction tool is open source and can be modified by yourself.
-
- 3) Log in with the extracted account information.
 
 
 # warning
@@ -38,46 +60,9 @@ The WhatsApp lib
 	sudo apt install libssl-dev
 	sudo apt-get install curl libcurl4-openssl-dev
 
-# Step (All is complete)
-  1) login
-  2) Send text message 
-  3) Send media message(video, audio,image, document ...)
-  4) Receive message(text, media ...)
-  5) group (create, join, leave ...)
-  6) presence
-
-## How to use
-Tool
-1) Compiling APK with Android studio
-2) Install APK to your emulator or mobile phone (need root)
-3) Export database
-4) Copy the database to the out directory, and log in with Gorgeous.
-
-
-
-Gorgeous
-1) Open the Gorgeous project with IntelliJ idea and you can compile it directly.
-
-2) Copy axolotl.db  to the out directory.
-
-3) click login button, then you can login with the default account, receive server response.
-
-
-## 如何使用
-Tool
- 这是一个安卓工程，用来从手机或者模拟器导出 账号数据，导出的账号数据可以使用 Gorgeous 登录。
- 1) 使用android studio 编译tool 工程
- 2) 将编译出的 apk 安装到手机或者模拟器上(需要有root 权限)
- 3) 打开apk， 直接点击导出就可以生成数据库文件。
-
- Gorgeous 
- 1) 使用 IntelliJ idea 打开 Gorgeous 工程，可以直接启动编译
- 2) 将测试数据库 axolotl.db 拷贝到out 目录下。或者也可以修改demo代码 加载指定位置的数据库。
-
- 3) 可能需要修改测试代码，指定socket 连接的代理，否则某些地方会连接不上服务器， 编译成功之后点击 界面上的登录即可。
-
 
 # License:
+Email: jinxing007X@outlook.com
 
 Gorgeous is licensed under the GPLv3+: http://www.gnu.org/licenses/gpl-3.0.html.
 
