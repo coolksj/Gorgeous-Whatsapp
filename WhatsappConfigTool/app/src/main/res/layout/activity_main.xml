@@ -16,34 +16,36 @@
         android:text="1) Check that the device is root\n2) Click Export\n3) Click Open Directory, or you can copy the files in the DIRECTORY\n4) Log in with Yowsup"
         android:textSize="20sp" />
 
+    <EditText
+        android:id="@+id/dest_path"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="" />
+
     <LinearLayout
         android:id="@+id/market"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0"
         android:orientation="horizontal">
 
-
-        <EditText
-            android:id="@+id/dest_path"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="" />
 
         <Button
             android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="export"
-            android:visibility="gone" />
+            android:layout_weight="1"
+            android:text="export(gorgeous)"
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/start_yowsup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="export(yowsup)" />
 
     </LinearLayout>

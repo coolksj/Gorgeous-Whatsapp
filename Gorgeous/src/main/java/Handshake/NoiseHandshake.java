@@ -408,7 +408,7 @@ public class NoiseHandshake {
         Log.d(TAG, "start HandshakeXX");
         noiseHandshakeState_ = NoiseJni.CreateInstance();
         if (noiseHandshakeState_  == 0) {
-            Log.e(TAG, "check whatsapp version NoiseJni.CheckWhatsappVersion");
+            Log.e(TAG, "you must call  NoiseJni.CheckWhatsappVersion to check version once");
             return;
         }
         //开始握手
@@ -429,7 +429,7 @@ public class NoiseHandshake {
         Log.d(TAG, "start HandshakeIK");
         noiseHandshakeState_ = NoiseJni.CreateInstance();
         if (noiseHandshakeState_  == 0) {
-            Log.e(TAG, "check whatsapp version NoiseJni.CheckWhatsappVersion");
+            Log.e(TAG, "you must call  NoiseJni.CheckWhatsappVersion to check version once");
             return;
         }
         NoiseJni.StartHandshakeIK(noiseHandshakeState_, env_.getClientStaticKeyPair().getStrPrivateKey().toByteArray(),env_.getClientStaticKeyPair().getStrPubKey().toByteArray(),env_.getServerStaticPublic().toByteArray());

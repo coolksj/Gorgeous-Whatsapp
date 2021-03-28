@@ -16427,6 +16427,1645 @@ public final class WhatsMessage {
 
   }
 
+  public interface WhatsAppWebMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:message.WhatsAppWebMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string url_ = 1;</code>
+     * @return Whether the url field is set.
+     */
+    boolean hasUrl();
+    /**
+     * <code>optional string url_ = 1;</code>
+     * @return The url.
+     */
+    java.lang.String getUrl();
+    /**
+     * <code>optional string url_ = 1;</code>
+     * @return The bytes for url.
+     */
+    com.google.protobuf.ByteString
+        getUrlBytes();
+
+    /**
+     * <code>optional bytes fileSha256_ = 2;</code>
+     * @return Whether the fileSha256 field is set.
+     */
+    boolean hasFileSha256();
+    /**
+     * <code>optional bytes fileSha256_ = 2;</code>
+     * @return The fileSha256.
+     */
+    com.google.protobuf.ByteString getFileSha256();
+
+    /**
+     * <code>optional bytes fileEncSha256_ = 3;</code>
+     * @return Whether the fileEncSha256 field is set.
+     */
+    boolean hasFileEncSha256();
+    /**
+     * <code>optional bytes fileEncSha256_ = 3;</code>
+     * @return The fileEncSha256.
+     */
+    com.google.protobuf.ByteString getFileEncSha256();
+
+    /**
+     * <code>optional bytes mediaKey_ = 4;</code>
+     * @return Whether the mediaKey field is set.
+     */
+    boolean hasMediaKey();
+    /**
+     * <code>optional bytes mediaKey_ = 4;</code>
+     * @return The mediaKey.
+     */
+    com.google.protobuf.ByteString getMediaKey();
+
+    /**
+     * <code>optional string mimetype_ = 5;</code>
+     * @return Whether the mimetype field is set.
+     */
+    boolean hasMimetype();
+    /**
+     * <code>optional string mimetype_ = 5;</code>
+     * @return The mimetype.
+     */
+    java.lang.String getMimetype();
+    /**
+     * <code>optional string mimetype_ = 5;</code>
+     * @return The bytes for mimetype.
+     */
+    com.google.protobuf.ByteString
+        getMimetypeBytes();
+
+    /**
+     * <code>optional int32 width = 6;</code>
+     * @return Whether the width field is set.
+     */
+    boolean hasWidth();
+    /**
+     * <code>optional int32 width = 6;</code>
+     * @return The width.
+     */
+    int getWidth();
+
+    /**
+     * <code>optional int32 height = 7;</code>
+     * @return Whether the height field is set.
+     */
+    boolean hasHeight();
+    /**
+     * <code>optional int32 height = 7;</code>
+     * @return The height.
+     */
+    int getHeight();
+
+    /**
+     * <code>optional string directPath_ = 8;</code>
+     * @return Whether the directPath field is set.
+     */
+    boolean hasDirectPath();
+    /**
+     * <code>optional string directPath_ = 8;</code>
+     * @return The directPath.
+     */
+    java.lang.String getDirectPath();
+    /**
+     * <code>optional string directPath_ = 8;</code>
+     * @return The bytes for directPath.
+     */
+    com.google.protobuf.ByteString
+        getDirectPathBytes();
+
+    /**
+     * <code>optional int64 fileLength_ = 9;</code>
+     * @return Whether the fileLength field is set.
+     */
+    boolean hasFileLength();
+    /**
+     * <code>optional int64 fileLength_ = 9;</code>
+     * @return The fileLength.
+     */
+    long getFileLength();
+
+    /**
+     * <code>optional int32 timestamp_ = 10;</code>
+     * @return Whether the timestamp field is set.
+     */
+    boolean hasTimestamp();
+    /**
+     * <code>optional int32 timestamp_ = 10;</code>
+     * @return The timestamp.
+     */
+    int getTimestamp();
+  }
+  /**
+   * Protobuf type {@code message.WhatsAppWebMessage}
+   */
+  public  static final class WhatsAppWebMessage extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:message.WhatsAppWebMessage)
+      WhatsAppWebMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use WhatsAppWebMessage.newBuilder() to construct.
+    private WhatsAppWebMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private WhatsAppWebMessage() {
+      url_ = "";
+      fileSha256_ = com.google.protobuf.ByteString.EMPTY;
+      fileEncSha256_ = com.google.protobuf.ByteString.EMPTY;
+      mediaKey_ = com.google.protobuf.ByteString.EMPTY;
+      mimetype_ = "";
+      directPath_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new WhatsAppWebMessage();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private WhatsAppWebMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              url_ = bs;
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              fileSha256_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              fileEncSha256_ = input.readBytes();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              mediaKey_ = input.readBytes();
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              mimetype_ = bs;
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              width_ = input.readInt32();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              height_ = input.readInt32();
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              directPath_ = bs;
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              fileLength_ = input.readInt64();
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000200;
+              timestamp_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return Message.WhatsMessage.internal_static_message_WhatsAppWebMessage_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return Message.WhatsMessage.internal_static_message_WhatsAppWebMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              Message.WhatsMessage.WhatsAppWebMessage.class, Message.WhatsMessage.WhatsAppWebMessage.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int URL__FIELD_NUMBER = 1;
+    private volatile java.lang.Object url_;
+    /**
+     * <code>optional string url_ = 1;</code>
+     * @return Whether the url field is set.
+     */
+    public boolean hasUrl() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional string url_ = 1;</code>
+     * @return The url.
+     */
+    public java.lang.String getUrl() {
+      java.lang.Object ref = url_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          url_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string url_ = 1;</code>
+     * @return The bytes for url.
+     */
+    public com.google.protobuf.ByteString
+        getUrlBytes() {
+      java.lang.Object ref = url_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        url_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FILESHA256__FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString fileSha256_;
+    /**
+     * <code>optional bytes fileSha256_ = 2;</code>
+     * @return Whether the fileSha256 field is set.
+     */
+    public boolean hasFileSha256() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>optional bytes fileSha256_ = 2;</code>
+     * @return The fileSha256.
+     */
+    public com.google.protobuf.ByteString getFileSha256() {
+      return fileSha256_;
+    }
+
+    public static final int FILEENCSHA256__FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString fileEncSha256_;
+    /**
+     * <code>optional bytes fileEncSha256_ = 3;</code>
+     * @return Whether the fileEncSha256 field is set.
+     */
+    public boolean hasFileEncSha256() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>optional bytes fileEncSha256_ = 3;</code>
+     * @return The fileEncSha256.
+     */
+    public com.google.protobuf.ByteString getFileEncSha256() {
+      return fileEncSha256_;
+    }
+
+    public static final int MEDIAKEY__FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString mediaKey_;
+    /**
+     * <code>optional bytes mediaKey_ = 4;</code>
+     * @return Whether the mediaKey field is set.
+     */
+    public boolean hasMediaKey() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>optional bytes mediaKey_ = 4;</code>
+     * @return The mediaKey.
+     */
+    public com.google.protobuf.ByteString getMediaKey() {
+      return mediaKey_;
+    }
+
+    public static final int MIMETYPE__FIELD_NUMBER = 5;
+    private volatile java.lang.Object mimetype_;
+    /**
+     * <code>optional string mimetype_ = 5;</code>
+     * @return Whether the mimetype field is set.
+     */
+    public boolean hasMimetype() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <code>optional string mimetype_ = 5;</code>
+     * @return The mimetype.
+     */
+    public java.lang.String getMimetype() {
+      java.lang.Object ref = mimetype_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          mimetype_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string mimetype_ = 5;</code>
+     * @return The bytes for mimetype.
+     */
+    public com.google.protobuf.ByteString
+        getMimetypeBytes() {
+      java.lang.Object ref = mimetype_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        mimetype_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int WIDTH_FIELD_NUMBER = 6;
+    private int width_;
+    /**
+     * <code>optional int32 width = 6;</code>
+     * @return Whether the width field is set.
+     */
+    public boolean hasWidth() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <code>optional int32 width = 6;</code>
+     * @return The width.
+     */
+    public int getWidth() {
+      return width_;
+    }
+
+    public static final int HEIGHT_FIELD_NUMBER = 7;
+    private int height_;
+    /**
+     * <code>optional int32 height = 7;</code>
+     * @return Whether the height field is set.
+     */
+    public boolean hasHeight() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <code>optional int32 height = 7;</code>
+     * @return The height.
+     */
+    public int getHeight() {
+      return height_;
+    }
+
+    public static final int DIRECTPATH__FIELD_NUMBER = 8;
+    private volatile java.lang.Object directPath_;
+    /**
+     * <code>optional string directPath_ = 8;</code>
+     * @return Whether the directPath field is set.
+     */
+    public boolean hasDirectPath() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <code>optional string directPath_ = 8;</code>
+     * @return The directPath.
+     */
+    public java.lang.String getDirectPath() {
+      java.lang.Object ref = directPath_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          directPath_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string directPath_ = 8;</code>
+     * @return The bytes for directPath.
+     */
+    public com.google.protobuf.ByteString
+        getDirectPathBytes() {
+      java.lang.Object ref = directPath_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        directPath_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FILELENGTH__FIELD_NUMBER = 9;
+    private long fileLength_;
+    /**
+     * <code>optional int64 fileLength_ = 9;</code>
+     * @return Whether the fileLength field is set.
+     */
+    public boolean hasFileLength() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <code>optional int64 fileLength_ = 9;</code>
+     * @return The fileLength.
+     */
+    public long getFileLength() {
+      return fileLength_;
+    }
+
+    public static final int TIMESTAMP__FIELD_NUMBER = 10;
+    private int timestamp_;
+    /**
+     * <code>optional int32 timestamp_ = 10;</code>
+     * @return Whether the timestamp field is set.
+     */
+    public boolean hasTimestamp() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <code>optional int32 timestamp_ = 10;</code>
+     * @return The timestamp.
+     */
+    public int getTimestamp() {
+      return timestamp_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, url_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeBytes(2, fileSha256_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeBytes(3, fileEncSha256_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeBytes(4, mediaKey_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, mimetype_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        output.writeInt32(6, width_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        output.writeInt32(7, height_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, directPath_);
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        output.writeInt64(9, fileLength_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        output.writeInt32(10, timestamp_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, url_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, fileSha256_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, fileEncSha256_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, mediaKey_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, mimetype_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(6, width_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, height_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, directPath_);
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(9, fileLength_);
+      }
+      if (((bitField0_ & 0x00000200) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(10, timestamp_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof Message.WhatsMessage.WhatsAppWebMessage)) {
+        return super.equals(obj);
+      }
+      Message.WhatsMessage.WhatsAppWebMessage other = (Message.WhatsMessage.WhatsAppWebMessage) obj;
+
+      if (hasUrl() != other.hasUrl()) return false;
+      if (hasUrl()) {
+        if (!getUrl()
+            .equals(other.getUrl())) return false;
+      }
+      if (hasFileSha256() != other.hasFileSha256()) return false;
+      if (hasFileSha256()) {
+        if (!getFileSha256()
+            .equals(other.getFileSha256())) return false;
+      }
+      if (hasFileEncSha256() != other.hasFileEncSha256()) return false;
+      if (hasFileEncSha256()) {
+        if (!getFileEncSha256()
+            .equals(other.getFileEncSha256())) return false;
+      }
+      if (hasMediaKey() != other.hasMediaKey()) return false;
+      if (hasMediaKey()) {
+        if (!getMediaKey()
+            .equals(other.getMediaKey())) return false;
+      }
+      if (hasMimetype() != other.hasMimetype()) return false;
+      if (hasMimetype()) {
+        if (!getMimetype()
+            .equals(other.getMimetype())) return false;
+      }
+      if (hasWidth() != other.hasWidth()) return false;
+      if (hasWidth()) {
+        if (getWidth()
+            != other.getWidth()) return false;
+      }
+      if (hasHeight() != other.hasHeight()) return false;
+      if (hasHeight()) {
+        if (getHeight()
+            != other.getHeight()) return false;
+      }
+      if (hasDirectPath() != other.hasDirectPath()) return false;
+      if (hasDirectPath()) {
+        if (!getDirectPath()
+            .equals(other.getDirectPath())) return false;
+      }
+      if (hasFileLength() != other.hasFileLength()) return false;
+      if (hasFileLength()) {
+        if (getFileLength()
+            != other.getFileLength()) return false;
+      }
+      if (hasTimestamp() != other.hasTimestamp()) return false;
+      if (hasTimestamp()) {
+        if (getTimestamp()
+            != other.getTimestamp()) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasUrl()) {
+        hash = (37 * hash) + URL__FIELD_NUMBER;
+        hash = (53 * hash) + getUrl().hashCode();
+      }
+      if (hasFileSha256()) {
+        hash = (37 * hash) + FILESHA256__FIELD_NUMBER;
+        hash = (53 * hash) + getFileSha256().hashCode();
+      }
+      if (hasFileEncSha256()) {
+        hash = (37 * hash) + FILEENCSHA256__FIELD_NUMBER;
+        hash = (53 * hash) + getFileEncSha256().hashCode();
+      }
+      if (hasMediaKey()) {
+        hash = (37 * hash) + MEDIAKEY__FIELD_NUMBER;
+        hash = (53 * hash) + getMediaKey().hashCode();
+      }
+      if (hasMimetype()) {
+        hash = (37 * hash) + MIMETYPE__FIELD_NUMBER;
+        hash = (53 * hash) + getMimetype().hashCode();
+      }
+      if (hasWidth()) {
+        hash = (37 * hash) + WIDTH_FIELD_NUMBER;
+        hash = (53 * hash) + getWidth();
+      }
+      if (hasHeight()) {
+        hash = (37 * hash) + HEIGHT_FIELD_NUMBER;
+        hash = (53 * hash) + getHeight();
+      }
+      if (hasDirectPath()) {
+        hash = (37 * hash) + DIRECTPATH__FIELD_NUMBER;
+        hash = (53 * hash) + getDirectPath().hashCode();
+      }
+      if (hasFileLength()) {
+        hash = (37 * hash) + FILELENGTH__FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getFileLength());
+      }
+      if (hasTimestamp()) {
+        hash = (37 * hash) + TIMESTAMP__FIELD_NUMBER;
+        hash = (53 * hash) + getTimestamp();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Message.WhatsMessage.WhatsAppWebMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(Message.WhatsMessage.WhatsAppWebMessage prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code message.WhatsAppWebMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:message.WhatsAppWebMessage)
+        Message.WhatsMessage.WhatsAppWebMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return Message.WhatsMessage.internal_static_message_WhatsAppWebMessage_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return Message.WhatsMessage.internal_static_message_WhatsAppWebMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Message.WhatsMessage.WhatsAppWebMessage.class, Message.WhatsMessage.WhatsAppWebMessage.Builder.class);
+      }
+
+      // Construct using Message.WhatsMessage.WhatsAppWebMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        url_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fileSha256_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fileEncSha256_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        mediaKey_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        mimetype_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        width_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        height_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        directPath_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
+        fileLength_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        timestamp_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return Message.WhatsMessage.internal_static_message_WhatsAppWebMessage_descriptor;
+      }
+
+      @java.lang.Override
+      public Message.WhatsMessage.WhatsAppWebMessage getDefaultInstanceForType() {
+        return Message.WhatsMessage.WhatsAppWebMessage.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public Message.WhatsMessage.WhatsAppWebMessage build() {
+        Message.WhatsMessage.WhatsAppWebMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public Message.WhatsMessage.WhatsAppWebMessage buildPartial() {
+        Message.WhatsMessage.WhatsAppWebMessage result = new Message.WhatsMessage.WhatsAppWebMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.url_ = url_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.fileSha256_ = fileSha256_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.fileEncSha256_ = fileEncSha256_;
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.mediaKey_ = mediaKey_;
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.mimetype_ = mimetype_;
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.width_ = width_;
+          to_bitField0_ |= 0x00000020;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.height_ = height_;
+          to_bitField0_ |= 0x00000040;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.directPath_ = directPath_;
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.fileLength_ = fileLength_;
+          to_bitField0_ |= 0x00000100;
+        }
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.timestamp_ = timestamp_;
+          to_bitField0_ |= 0x00000200;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof Message.WhatsMessage.WhatsAppWebMessage) {
+          return mergeFrom((Message.WhatsMessage.WhatsAppWebMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(Message.WhatsMessage.WhatsAppWebMessage other) {
+        if (other == Message.WhatsMessage.WhatsAppWebMessage.getDefaultInstance()) return this;
+        if (other.hasUrl()) {
+          bitField0_ |= 0x00000001;
+          url_ = other.url_;
+          onChanged();
+        }
+        if (other.hasFileSha256()) {
+          setFileSha256(other.getFileSha256());
+        }
+        if (other.hasFileEncSha256()) {
+          setFileEncSha256(other.getFileEncSha256());
+        }
+        if (other.hasMediaKey()) {
+          setMediaKey(other.getMediaKey());
+        }
+        if (other.hasMimetype()) {
+          bitField0_ |= 0x00000010;
+          mimetype_ = other.mimetype_;
+          onChanged();
+        }
+        if (other.hasWidth()) {
+          setWidth(other.getWidth());
+        }
+        if (other.hasHeight()) {
+          setHeight(other.getHeight());
+        }
+        if (other.hasDirectPath()) {
+          bitField0_ |= 0x00000080;
+          directPath_ = other.directPath_;
+          onChanged();
+        }
+        if (other.hasFileLength()) {
+          setFileLength(other.getFileLength());
+        }
+        if (other.hasTimestamp()) {
+          setTimestamp(other.getTimestamp());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Message.WhatsMessage.WhatsAppWebMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (Message.WhatsMessage.WhatsAppWebMessage) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object url_ = "";
+      /**
+       * <code>optional string url_ = 1;</code>
+       * @return Whether the url field is set.
+       */
+      public boolean hasUrl() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional string url_ = 1;</code>
+       * @return The url.
+       */
+      public java.lang.String getUrl() {
+        java.lang.Object ref = url_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            url_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string url_ = 1;</code>
+       * @return The bytes for url.
+       */
+      public com.google.protobuf.ByteString
+          getUrlBytes() {
+        java.lang.Object ref = url_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          url_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string url_ = 1;</code>
+       * @param value The url to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        url_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string url_ = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUrl() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        url_ = getDefaultInstance().getUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string url_ = 1;</code>
+       * @param value The bytes for url to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        url_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString fileSha256_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes fileSha256_ = 2;</code>
+       * @return Whether the fileSha256 field is set.
+       */
+      public boolean hasFileSha256() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>optional bytes fileSha256_ = 2;</code>
+       * @return The fileSha256.
+       */
+      public com.google.protobuf.ByteString getFileSha256() {
+        return fileSha256_;
+      }
+      /**
+       * <code>optional bytes fileSha256_ = 2;</code>
+       * @param value The fileSha256 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFileSha256(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        fileSha256_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes fileSha256_ = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFileSha256() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fileSha256_ = getDefaultInstance().getFileSha256();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString fileEncSha256_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes fileEncSha256_ = 3;</code>
+       * @return Whether the fileEncSha256 field is set.
+       */
+      public boolean hasFileEncSha256() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>optional bytes fileEncSha256_ = 3;</code>
+       * @return The fileEncSha256.
+       */
+      public com.google.protobuf.ByteString getFileEncSha256() {
+        return fileEncSha256_;
+      }
+      /**
+       * <code>optional bytes fileEncSha256_ = 3;</code>
+       * @param value The fileEncSha256 to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFileEncSha256(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        fileEncSha256_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes fileEncSha256_ = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFileEncSha256() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        fileEncSha256_ = getDefaultInstance().getFileEncSha256();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString mediaKey_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes mediaKey_ = 4;</code>
+       * @return Whether the mediaKey field is set.
+       */
+      public boolean hasMediaKey() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <code>optional bytes mediaKey_ = 4;</code>
+       * @return The mediaKey.
+       */
+      public com.google.protobuf.ByteString getMediaKey() {
+        return mediaKey_;
+      }
+      /**
+       * <code>optional bytes mediaKey_ = 4;</code>
+       * @param value The mediaKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMediaKey(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        mediaKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes mediaKey_ = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMediaKey() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        mediaKey_ = getDefaultInstance().getMediaKey();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object mimetype_ = "";
+      /**
+       * <code>optional string mimetype_ = 5;</code>
+       * @return Whether the mimetype field is set.
+       */
+      public boolean hasMimetype() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <code>optional string mimetype_ = 5;</code>
+       * @return The mimetype.
+       */
+      public java.lang.String getMimetype() {
+        java.lang.Object ref = mimetype_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            mimetype_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string mimetype_ = 5;</code>
+       * @return The bytes for mimetype.
+       */
+      public com.google.protobuf.ByteString
+          getMimetypeBytes() {
+        java.lang.Object ref = mimetype_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          mimetype_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string mimetype_ = 5;</code>
+       * @param value The mimetype to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMimetype(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        mimetype_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string mimetype_ = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMimetype() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        mimetype_ = getDefaultInstance().getMimetype();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string mimetype_ = 5;</code>
+       * @param value The bytes for mimetype to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMimetypeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        mimetype_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int width_ ;
+      /**
+       * <code>optional int32 width = 6;</code>
+       * @return Whether the width field is set.
+       */
+      public boolean hasWidth() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <code>optional int32 width = 6;</code>
+       * @return The width.
+       */
+      public int getWidth() {
+        return width_;
+      }
+      /**
+       * <code>optional int32 width = 6;</code>
+       * @param value The width to set.
+       * @return This builder for chaining.
+       */
+      public Builder setWidth(int value) {
+        bitField0_ |= 0x00000020;
+        width_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 width = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearWidth() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        width_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int height_ ;
+      /**
+       * <code>optional int32 height = 7;</code>
+       * @return Whether the height field is set.
+       */
+      public boolean hasHeight() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <code>optional int32 height = 7;</code>
+       * @return The height.
+       */
+      public int getHeight() {
+        return height_;
+      }
+      /**
+       * <code>optional int32 height = 7;</code>
+       * @param value The height to set.
+       * @return This builder for chaining.
+       */
+      public Builder setHeight(int value) {
+        bitField0_ |= 0x00000040;
+        height_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 height = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearHeight() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        height_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object directPath_ = "";
+      /**
+       * <code>optional string directPath_ = 8;</code>
+       * @return Whether the directPath field is set.
+       */
+      public boolean hasDirectPath() {
+        return ((bitField0_ & 0x00000080) != 0);
+      }
+      /**
+       * <code>optional string directPath_ = 8;</code>
+       * @return The directPath.
+       */
+      public java.lang.String getDirectPath() {
+        java.lang.Object ref = directPath_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            directPath_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string directPath_ = 8;</code>
+       * @return The bytes for directPath.
+       */
+      public com.google.protobuf.ByteString
+          getDirectPathBytes() {
+        java.lang.Object ref = directPath_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          directPath_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string directPath_ = 8;</code>
+       * @param value The directPath to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDirectPath(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        directPath_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string directPath_ = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDirectPath() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        directPath_ = getDefaultInstance().getDirectPath();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string directPath_ = 8;</code>
+       * @param value The bytes for directPath to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDirectPathBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        directPath_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long fileLength_ ;
+      /**
+       * <code>optional int64 fileLength_ = 9;</code>
+       * @return Whether the fileLength field is set.
+       */
+      public boolean hasFileLength() {
+        return ((bitField0_ & 0x00000100) != 0);
+      }
+      /**
+       * <code>optional int64 fileLength_ = 9;</code>
+       * @return The fileLength.
+       */
+      public long getFileLength() {
+        return fileLength_;
+      }
+      /**
+       * <code>optional int64 fileLength_ = 9;</code>
+       * @param value The fileLength to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFileLength(long value) {
+        bitField0_ |= 0x00000100;
+        fileLength_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 fileLength_ = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFileLength() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        fileLength_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int timestamp_ ;
+      /**
+       * <code>optional int32 timestamp_ = 10;</code>
+       * @return Whether the timestamp field is set.
+       */
+      public boolean hasTimestamp() {
+        return ((bitField0_ & 0x00000200) != 0);
+      }
+      /**
+       * <code>optional int32 timestamp_ = 10;</code>
+       * @return The timestamp.
+       */
+      public int getTimestamp() {
+        return timestamp_;
+      }
+      /**
+       * <code>optional int32 timestamp_ = 10;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTimestamp(int value) {
+        bitField0_ |= 0x00000200;
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 timestamp_ = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTimestamp() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        timestamp_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:message.WhatsAppWebMessage)
+    }
+
+    // @@protoc_insertion_point(class_scope:message.WhatsAppWebMessage)
+    private static final Message.WhatsMessage.WhatsAppWebMessage DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Message.WhatsMessage.WhatsAppWebMessage();
+    }
+
+    public static Message.WhatsMessage.WhatsAppWebMessage getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<WhatsAppWebMessage>
+        PARSER = new com.google.protobuf.AbstractParser<WhatsAppWebMessage>() {
+      @java.lang.Override
+      public WhatsAppWebMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new WhatsAppWebMessage(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<WhatsAppWebMessage> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<WhatsAppWebMessage> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public Message.WhatsMessage.WhatsAppWebMessage getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface WhatsAppVideoMessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:message.WhatsAppVideoMessage)
       com.google.protobuf.MessageOrBuilder {
@@ -25500,6 +27139,21 @@ public final class WhatsMessage {
      * <code>optional .message.WhatsAppStickerMessage stickerMessage_ = 20;</code>
      */
     Message.WhatsMessage.WhatsAppStickerMessageOrBuilder getStickerMessageOrBuilder();
+
+    /**
+     * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+     * @return Whether the webMessage field is set.
+     */
+    boolean hasWebMessage();
+    /**
+     * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+     * @return The webMessage.
+     */
+    Message.WhatsMessage.WhatsAppWebMessage getWebMessage();
+    /**
+     * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+     */
+    Message.WhatsMessage.WhatsAppWebMessageOrBuilder getWebMessageOrBuilder();
   }
   /**
    * Protobuf type {@code message.WhatsAppMessage}
@@ -25786,6 +27440,19 @@ public final class WhatsMessage {
                 stickerMessage_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00040000;
+              break;
+            }
+            case 210: {
+              Message.WhatsMessage.WhatsAppWebMessage.Builder subBuilder = null;
+              if (((bitField0_ & 0x00080000) != 0)) {
+                subBuilder = webMessage_.toBuilder();
+              }
+              webMessage_ = input.readMessage(Message.WhatsMessage.WhatsAppWebMessage.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(webMessage_);
+                webMessage_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00080000;
               break;
             }
             default: {
@@ -26280,6 +27947,29 @@ public final class WhatsMessage {
       return stickerMessage_ == null ? Message.WhatsMessage.WhatsAppStickerMessage.getDefaultInstance() : stickerMessage_;
     }
 
+    public static final int WEBMESSAGE__FIELD_NUMBER = 26;
+    private Message.WhatsMessage.WhatsAppWebMessage webMessage_;
+    /**
+     * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+     * @return Whether the webMessage field is set.
+     */
+    public boolean hasWebMessage() {
+      return ((bitField0_ & 0x00080000) != 0);
+    }
+    /**
+     * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+     * @return The webMessage.
+     */
+    public Message.WhatsMessage.WhatsAppWebMessage getWebMessage() {
+      return webMessage_ == null ? Message.WhatsMessage.WhatsAppWebMessage.getDefaultInstance() : webMessage_;
+    }
+    /**
+     * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+     */
+    public Message.WhatsMessage.WhatsAppWebMessageOrBuilder getWebMessageOrBuilder() {
+      return webMessage_ == null ? Message.WhatsMessage.WhatsAppWebMessage.getDefaultInstance() : webMessage_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -26350,6 +28040,9 @@ public final class WhatsMessage {
       }
       if (((bitField0_ & 0x00040000) != 0)) {
         output.writeMessage(20, getStickerMessage());
+      }
+      if (((bitField0_ & 0x00080000) != 0)) {
+        output.writeMessage(26, getWebMessage());
       }
       unknownFields.writeTo(output);
     }
@@ -26434,6 +28127,10 @@ public final class WhatsMessage {
       if (((bitField0_ & 0x00040000) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(20, getStickerMessage());
+      }
+      if (((bitField0_ & 0x00080000) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(26, getWebMessage());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -26545,6 +28242,11 @@ public final class WhatsMessage {
         if (!getStickerMessage()
             .equals(other.getStickerMessage())) return false;
       }
+      if (hasWebMessage() != other.hasWebMessage()) return false;
+      if (hasWebMessage()) {
+        if (!getWebMessage()
+            .equals(other.getWebMessage())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -26631,6 +28333,10 @@ public final class WhatsMessage {
       if (hasStickerMessage()) {
         hash = (37 * hash) + STICKERMESSAGE__FIELD_NUMBER;
         hash = (53 * hash) + getStickerMessage().hashCode();
+      }
+      if (hasWebMessage()) {
+        hash = (37 * hash) + WEBMESSAGE__FIELD_NUMBER;
+        hash = (53 * hash) + getWebMessage().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -26778,6 +28484,7 @@ public final class WhatsMessage {
           getRequestPaymentMessageFieldBuilder();
           getLiveLocationMessageFieldBuilder();
           getStickerMessageFieldBuilder();
+          getWebMessageFieldBuilder();
         }
       }
       @java.lang.Override
@@ -26893,6 +28600,12 @@ public final class WhatsMessage {
           stickerMessageBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00040000);
+        if (webMessageBuilder_ == null) {
+          webMessage_ = null;
+        } else {
+          webMessageBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00080000);
         return this;
       }
 
@@ -27069,6 +28782,14 @@ public final class WhatsMessage {
           }
           to_bitField0_ |= 0x00040000;
         }
+        if (((from_bitField0_ & 0x00080000) != 0)) {
+          if (webMessageBuilder_ == null) {
+            result.webMessage_ = webMessage_;
+          } else {
+            result.webMessage_ = webMessageBuilder_.build();
+          }
+          to_bitField0_ |= 0x00080000;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -27176,6 +28897,9 @@ public final class WhatsMessage {
         }
         if (other.hasStickerMessage()) {
           mergeStickerMessage(other.getStickerMessage());
+        }
+        if (other.hasWebMessage()) {
+          mergeWebMessage(other.getWebMessage());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -29450,6 +31174,126 @@ public final class WhatsMessage {
         }
         return stickerMessageBuilder_;
       }
+
+      private Message.WhatsMessage.WhatsAppWebMessage webMessage_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          Message.WhatsMessage.WhatsAppWebMessage, Message.WhatsMessage.WhatsAppWebMessage.Builder, Message.WhatsMessage.WhatsAppWebMessageOrBuilder> webMessageBuilder_;
+      /**
+       * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+       * @return Whether the webMessage field is set.
+       */
+      public boolean hasWebMessage() {
+        return ((bitField0_ & 0x00080000) != 0);
+      }
+      /**
+       * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+       * @return The webMessage.
+       */
+      public Message.WhatsMessage.WhatsAppWebMessage getWebMessage() {
+        if (webMessageBuilder_ == null) {
+          return webMessage_ == null ? Message.WhatsMessage.WhatsAppWebMessage.getDefaultInstance() : webMessage_;
+        } else {
+          return webMessageBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+       */
+      public Builder setWebMessage(Message.WhatsMessage.WhatsAppWebMessage value) {
+        if (webMessageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          webMessage_ = value;
+          onChanged();
+        } else {
+          webMessageBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00080000;
+        return this;
+      }
+      /**
+       * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+       */
+      public Builder setWebMessage(
+          Message.WhatsMessage.WhatsAppWebMessage.Builder builderForValue) {
+        if (webMessageBuilder_ == null) {
+          webMessage_ = builderForValue.build();
+          onChanged();
+        } else {
+          webMessageBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00080000;
+        return this;
+      }
+      /**
+       * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+       */
+      public Builder mergeWebMessage(Message.WhatsMessage.WhatsAppWebMessage value) {
+        if (webMessageBuilder_ == null) {
+          if (((bitField0_ & 0x00080000) != 0) &&
+              webMessage_ != null &&
+              webMessage_ != Message.WhatsMessage.WhatsAppWebMessage.getDefaultInstance()) {
+            webMessage_ =
+              Message.WhatsMessage.WhatsAppWebMessage.newBuilder(webMessage_).mergeFrom(value).buildPartial();
+          } else {
+            webMessage_ = value;
+          }
+          onChanged();
+        } else {
+          webMessageBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00080000;
+        return this;
+      }
+      /**
+       * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+       */
+      public Builder clearWebMessage() {
+        if (webMessageBuilder_ == null) {
+          webMessage_ = null;
+          onChanged();
+        } else {
+          webMessageBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00080000);
+        return this;
+      }
+      /**
+       * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+       */
+      public Message.WhatsMessage.WhatsAppWebMessage.Builder getWebMessageBuilder() {
+        bitField0_ |= 0x00080000;
+        onChanged();
+        return getWebMessageFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+       */
+      public Message.WhatsMessage.WhatsAppWebMessageOrBuilder getWebMessageOrBuilder() {
+        if (webMessageBuilder_ != null) {
+          return webMessageBuilder_.getMessageOrBuilder();
+        } else {
+          return webMessage_ == null ?
+              Message.WhatsMessage.WhatsAppWebMessage.getDefaultInstance() : webMessage_;
+        }
+      }
+      /**
+       * <code>optional .message.WhatsAppWebMessage webMessage_ = 26;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          Message.WhatsMessage.WhatsAppWebMessage, Message.WhatsMessage.WhatsAppWebMessage.Builder, Message.WhatsMessage.WhatsAppWebMessageOrBuilder> 
+          getWebMessageFieldBuilder() {
+        if (webMessageBuilder_ == null) {
+          webMessageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              Message.WhatsMessage.WhatsAppWebMessage, Message.WhatsMessage.WhatsAppWebMessage.Builder, Message.WhatsMessage.WhatsAppWebMessageOrBuilder>(
+                  getWebMessage(),
+                  getParentForChildren(),
+                  isClean());
+          webMessage_ = null;
+        }
+        return webMessageBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -29553,6 +31397,11 @@ public final class WhatsMessage {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_message_WhatsAppAudioMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_message_WhatsAppWebMessage_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_message_WhatsAppWebMessage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_message_WhatsAppVideoMessage_descriptor;
   private static final 
@@ -29681,72 +31530,79 @@ public final class WhatsMessage {
       "\030\006 \001(\010\022\021\n\tmediaKey_\030\007 \001(\014\022\026\n\016fileEncSha2" +
       "56_\030\010 \001(\014\022\023\n\013directPath_\030\t \001(\t\0222\n\014contex" +
       "tInfo_\030\021 \001(\0132\034.message.WhatsAppContextIn" +
-      "fo\022\031\n\021streamingSidecar_\030\022 \001(\014\"\363\003\n\024WhatsA" +
-      "ppVideoMessage\022\014\n\004url_\030\001 \001(\t\022\021\n\tmimetype" +
-      "_\030\002 \001(\t\022\023\n\013fileSha256_\030\003 \001(\014\022\023\n\013fileLeng" +
-      "th_\030\004 \001(\003\022\020\n\010seconds_\030\005 \001(\005\022\021\n\tmediaKey_" +
-      "\030\006 \001(\014\022\020\n\010caption_\030\007 \001(\t\022\024\n\014gifPlayback_" +
-      "\030\010 \001(\010\022\017\n\007height_\030\t \001(\005\022\016\n\006width_\030\n \001(\005\022" +
-      "\026\n\016fileEncSha256_\030\013 \001(\014\022G\n\027interactiveAn" +
-      "notations_\030\014 \003(\0132&.message.WhatsAppInter" +
-      "activeAnnotation\022\023\n\013directPath_\030\r \001(\t\022\022\n" +
-      "\ntimestamp_\030\016 \001(\005\022\026\n\016jpegThumbnail_\030\020 \001(" +
-      "\014\0222\n\014contextInfo_\030\021 \001(\0132\034.message.WhatsA" +
-      "ppContextInfo\022\031\n\021streamingSidecar_\030\022 \001(\014" +
-      "\0221\n\017gifAttribution_\030\023 \001(\0162\030.message.What" +
-      "sAppGifAttr\"\016\n\014WhatsAppCall\"\016\n\014WhatsAppC" +
-      "hat\"\337\001\n\027WhatsAppProtocolMessage\0229\n\004key_\030" +
-      "\001 \001(\0132+.message.WhatsAppProtocolMessage." +
-      "MessageKey\0223\n\005type_\030\002 \001(\0162$.message.What" +
-      "sAppProtocolMessageType\032T\n\nMessageKey\022\022\n" +
-      "\nremoteJid_\030\001 \001(\t\022\017\n\007fromMe_\030\002 \001(\005\022\013\n\003id" +
-      "_\030\003 \001(\t\022\024\n\014participant_\030\004 \001(\t\"\234\001\n\034WhatsA" +
-      "ppContactsArrayMessage\022\024\n\014displayName_\030\001" +
-      " \001(\t\0222\n\tcontacts_\030\002 \003(\0132\037.message.WhatsA" +
-      "ppContactMessage\0222\n\014contextInfo_\030\021 \001(\0132\034" +
-      ".message.WhatsAppContextInfo\"!\n\037WhatsApp" +
-      "HighlyStructuredMessage\"\034\n\032WhatsAppSendP" +
-      "aymentMessage\"\037\n\035WhatsAppRequestPaymentM" +
-      "essage\"\035\n\033WhatsAppLiveLocationMessage\"\030\n" +
-      "\026WhatsAppStickerMessage\"\234\t\n\017WhatsAppMess" +
-      "age\022\025\n\rconversation_\030\001 \001(\t\022T\n\035senderKeyD" +
-      "istributionMessage_\030\002 \001(\0132-.message.What" +
-      "sAppSenderKeyDistributionMessage\0224\n\rimag" +
-      "eMessage_\030\003 \001(\0132\035.message.WhatsAppImageM" +
-      "essage\0228\n\017contactMessage_\030\004 \001(\0132\037.messag" +
-      "e.WhatsAppContactMessage\022:\n\020locationMess" +
-      "age_\030\005 \001(\0132 .message.WhatsAppLocationMes" +
-      "sage\022B\n\024extendedTextMessage_\030\006 \001(\0132$.mes" +
-      "sage.WhatsAppExtendedTextMessage\022:\n\020docu" +
-      "mentMessage_\030\007 \001(\0132 .message.WhatsAppDoc" +
-      "umentMessage\0224\n\raudioMessage_\030\010 \001(\0132\035.me" +
-      "ssage.WhatsAppAudioMessage\0224\n\rvideoMessa" +
-      "ge_\030\t \001(\0132\035.message.WhatsAppVideoMessage" +
-      "\022$\n\005call_\030\n \001(\0132\025.message.WhatsAppCall\022$" +
-      "\n\005chat_\030\013 \001(\0132\025.message.WhatsAppChat\022:\n\020" +
-      "protocolMessage_\030\014 \001(\0132 .message.WhatsAp" +
-      "pProtocolMessage\022D\n\025contactsArrayMessage" +
-      "_\030\r \001(\0132%.message.WhatsAppContactsArrayM" +
-      "essage\022J\n\030highlyStructuredMessage_\030\016 \001(\013" +
-      "2(.message.WhatsAppHighlyStructuredMessa" +
-      "ge\022b\n+fastRatchetKeySenderKeyDistributio" +
-      "nMessage_\030\017 \001(\0132-.message.WhatsAppSender" +
-      "KeyDistributionMessage\022@\n\023sendPaymentMes" +
-      "sage_\030\020 \001(\0132#.message.WhatsAppSendPaymen" +
-      "tMessage\022F\n\026requestPaymentMessage_\030\021 \001(\013" +
-      "2&.message.WhatsAppRequestPaymentMessage" +
-      "\022B\n\024liveLocationMessage_\030\022 \001(\0132$.message" +
-      ".WhatsAppLiveLocationMessage\0228\n\017stickerM" +
-      "essage_\030\024 \001(\0132\037.message.WhatsAppStickerM" +
-      "essage*z\n\014WhatsAppFont\022\016\n\nSANS_SERIF\020\000\022\t" +
-      "\n\005SERIF\020\001\022\023\n\017NORICAN_REGULAR\020\002\022\021\n\rBRYNDA" +
-      "N_WRITE\020\003\022\025\n\021BEBASNEUE_REGULAR\020\004\022\020\n\014OSWA" +
-      "LD_HEAVY\020\005*B\n\023WhatsAppPreviewType\022\024\n\020Pre" +
-      "viewType_NONE\020\000\022\025\n\021PreviewType_VIDEO\020\001*I" +
-      "\n\017WhatsAppGifAttr\022\020\n\014GifAttr_NONE\020\000\022\021\n\rG" +
-      "ifAttr_GIPHY\020\001\022\021\n\rGifAttr_TENOR\020\002*;\n\033Wha" +
-      "tsAppProtocolMessageType\022\034\n\030ProtocolMess" +
-      "ageType_NONE\020\000B\027\n\007MessageB\014WhatsMessage"
+      "fo\022\031\n\021streamingSidecar_\030\022 \001(\014\"\322\001\n\022WhatsA" +
+      "ppWebMessage\022\014\n\004url_\030\001 \001(\t\022\023\n\013fileSha256" +
+      "_\030\002 \001(\014\022\026\n\016fileEncSha256_\030\003 \001(\014\022\021\n\tmedia" +
+      "Key_\030\004 \001(\014\022\021\n\tmimetype_\030\005 \001(\t\022\r\n\005width\030\006" +
+      " \001(\005\022\016\n\006height\030\007 \001(\005\022\023\n\013directPath_\030\010 \001(" +
+      "\t\022\023\n\013fileLength_\030\t \001(\003\022\022\n\ntimestamp_\030\n \001" +
+      "(\005\"\363\003\n\024WhatsAppVideoMessage\022\014\n\004url_\030\001 \001(" +
+      "\t\022\021\n\tmimetype_\030\002 \001(\t\022\023\n\013fileSha256_\030\003 \001(" +
+      "\014\022\023\n\013fileLength_\030\004 \001(\003\022\020\n\010seconds_\030\005 \001(\005" +
+      "\022\021\n\tmediaKey_\030\006 \001(\014\022\020\n\010caption_\030\007 \001(\t\022\024\n" +
+      "\014gifPlayback_\030\010 \001(\010\022\017\n\007height_\030\t \001(\005\022\016\n\006" +
+      "width_\030\n \001(\005\022\026\n\016fileEncSha256_\030\013 \001(\014\022G\n\027" +
+      "interactiveAnnotations_\030\014 \003(\0132&.message." +
+      "WhatsAppInteractiveAnnotation\022\023\n\013directP" +
+      "ath_\030\r \001(\t\022\022\n\ntimestamp_\030\016 \001(\005\022\026\n\016jpegTh" +
+      "umbnail_\030\020 \001(\014\0222\n\014contextInfo_\030\021 \001(\0132\034.m" +
+      "essage.WhatsAppContextInfo\022\031\n\021streamingS" +
+      "idecar_\030\022 \001(\014\0221\n\017gifAttribution_\030\023 \001(\0162\030" +
+      ".message.WhatsAppGifAttr\"\016\n\014WhatsAppCall" +
+      "\"\016\n\014WhatsAppChat\"\337\001\n\027WhatsAppProtocolMes" +
+      "sage\0229\n\004key_\030\001 \001(\0132+.message.WhatsAppPro" +
+      "tocolMessage.MessageKey\0223\n\005type_\030\002 \001(\0162$" +
+      ".message.WhatsAppProtocolMessageType\032T\n\n" +
+      "MessageKey\022\022\n\nremoteJid_\030\001 \001(\t\022\017\n\007fromMe" +
+      "_\030\002 \001(\005\022\013\n\003id_\030\003 \001(\t\022\024\n\014participant_\030\004 \001" +
+      "(\t\"\234\001\n\034WhatsAppContactsArrayMessage\022\024\n\014d" +
+      "isplayName_\030\001 \001(\t\0222\n\tcontacts_\030\002 \003(\0132\037.m" +
+      "essage.WhatsAppContactMessage\0222\n\014context" +
+      "Info_\030\021 \001(\0132\034.message.WhatsAppContextInf" +
+      "o\"!\n\037WhatsAppHighlyStructuredMessage\"\034\n\032" +
+      "WhatsAppSendPaymentMessage\"\037\n\035WhatsAppRe" +
+      "questPaymentMessage\"\035\n\033WhatsAppLiveLocat" +
+      "ionMessage\"\030\n\026WhatsAppStickerMessage\"\316\t\n" +
+      "\017WhatsAppMessage\022\025\n\rconversation_\030\001 \001(\t\022" +
+      "T\n\035senderKeyDistributionMessage_\030\002 \001(\0132-" +
+      ".message.WhatsAppSenderKeyDistributionMe" +
+      "ssage\0224\n\rimageMessage_\030\003 \001(\0132\035.message.W" +
+      "hatsAppImageMessage\0228\n\017contactMessage_\030\004" +
+      " \001(\0132\037.message.WhatsAppContactMessage\022:\n" +
+      "\020locationMessage_\030\005 \001(\0132 .message.WhatsA" +
+      "ppLocationMessage\022B\n\024extendedTextMessage" +
+      "_\030\006 \001(\0132$.message.WhatsAppExtendedTextMe" +
+      "ssage\022:\n\020documentMessage_\030\007 \001(\0132 .messag" +
+      "e.WhatsAppDocumentMessage\0224\n\raudioMessag" +
+      "e_\030\010 \001(\0132\035.message.WhatsAppAudioMessage\022" +
+      "4\n\rvideoMessage_\030\t \001(\0132\035.message.WhatsAp" +
+      "pVideoMessage\022$\n\005call_\030\n \001(\0132\025.message.W" +
+      "hatsAppCall\022$\n\005chat_\030\013 \001(\0132\025.message.Wha" +
+      "tsAppChat\022:\n\020protocolMessage_\030\014 \001(\0132 .me" +
+      "ssage.WhatsAppProtocolMessage\022D\n\025contact" +
+      "sArrayMessage_\030\r \001(\0132%.message.WhatsAppC" +
+      "ontactsArrayMessage\022J\n\030highlyStructuredM" +
+      "essage_\030\016 \001(\0132(.message.WhatsAppHighlySt" +
+      "ructuredMessage\022b\n+fastRatchetKeySenderK" +
+      "eyDistributionMessage_\030\017 \001(\0132-.message.W" +
+      "hatsAppSenderKeyDistributionMessage\022@\n\023s" +
+      "endPaymentMessage_\030\020 \001(\0132#.message.Whats" +
+      "AppSendPaymentMessage\022F\n\026requestPaymentM" +
+      "essage_\030\021 \001(\0132&.message.WhatsAppRequestP" +
+      "aymentMessage\022B\n\024liveLocationMessage_\030\022 " +
+      "\001(\0132$.message.WhatsAppLiveLocationMessag" +
+      "e\0228\n\017stickerMessage_\030\024 \001(\0132\037.message.Wha" +
+      "tsAppStickerMessage\0220\n\013webMessage_\030\032 \001(\013" +
+      "2\033.message.WhatsAppWebMessage*z\n\014WhatsAp" +
+      "pFont\022\016\n\nSANS_SERIF\020\000\022\t\n\005SERIF\020\001\022\023\n\017NORI" +
+      "CAN_REGULAR\020\002\022\021\n\rBRYNDAN_WRITE\020\003\022\025\n\021BEBA" +
+      "SNEUE_REGULAR\020\004\022\020\n\014OSWALD_HEAVY\020\005*B\n\023Wha" +
+      "tsAppPreviewType\022\024\n\020PreviewType_NONE\020\000\022\025" +
+      "\n\021PreviewType_VIDEO\020\001*I\n\017WhatsAppGifAttr" +
+      "\022\020\n\014GifAttr_NONE\020\000\022\021\n\rGifAttr_GIPHY\020\001\022\021\n" +
+      "\rGifAttr_TENOR\020\002*;\n\033WhatsAppProtocolMess" +
+      "ageType\022\034\n\030ProtocolMessageType_NONE\020\000B\027\n" +
+      "\007MessageB\014WhatsMessage"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -29812,26 +31668,32 @@ public final class WhatsMessage {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppAudioMessage_descriptor,
         new java.lang.String[] { "Url", "Mimetype", "FileSha256", "FileLength", "Seconds", "Ptt", "MediaKey", "FileEncSha256", "DirectPath", "ContextInfo", "StreamingSidecar", });
-    internal_static_message_WhatsAppVideoMessage_descriptor =
+    internal_static_message_WhatsAppWebMessage_descriptor =
       getDescriptor().getMessageTypes().get(10);
+    internal_static_message_WhatsAppWebMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_message_WhatsAppWebMessage_descriptor,
+        new java.lang.String[] { "Url", "FileSha256", "FileEncSha256", "MediaKey", "Mimetype", "Width", "Height", "DirectPath", "FileLength", "Timestamp", });
+    internal_static_message_WhatsAppVideoMessage_descriptor =
+      getDescriptor().getMessageTypes().get(11);
     internal_static_message_WhatsAppVideoMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppVideoMessage_descriptor,
         new java.lang.String[] { "Url", "Mimetype", "FileSha256", "FileLength", "Seconds", "MediaKey", "Caption", "GifPlayback", "Height", "Width", "FileEncSha256", "InteractiveAnnotations", "DirectPath", "Timestamp", "JpegThumbnail", "ContextInfo", "StreamingSidecar", "GifAttribution", });
     internal_static_message_WhatsAppCall_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_message_WhatsAppCall_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppCall_descriptor,
         new java.lang.String[] { });
     internal_static_message_WhatsAppChat_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_message_WhatsAppChat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppChat_descriptor,
         new java.lang.String[] { });
     internal_static_message_WhatsAppProtocolMessage_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_message_WhatsAppProtocolMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppProtocolMessage_descriptor,
@@ -29843,47 +31705,47 @@ public final class WhatsMessage {
         internal_static_message_WhatsAppProtocolMessage_MessageKey_descriptor,
         new java.lang.String[] { "RemoteJid", "FromMe", "Id", "Participant", });
     internal_static_message_WhatsAppContactsArrayMessage_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_message_WhatsAppContactsArrayMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppContactsArrayMessage_descriptor,
         new java.lang.String[] { "DisplayName", "Contacts", "ContextInfo", });
     internal_static_message_WhatsAppHighlyStructuredMessage_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_message_WhatsAppHighlyStructuredMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppHighlyStructuredMessage_descriptor,
         new java.lang.String[] { });
     internal_static_message_WhatsAppSendPaymentMessage_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_message_WhatsAppSendPaymentMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppSendPaymentMessage_descriptor,
         new java.lang.String[] { });
     internal_static_message_WhatsAppRequestPaymentMessage_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_message_WhatsAppRequestPaymentMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppRequestPaymentMessage_descriptor,
         new java.lang.String[] { });
     internal_static_message_WhatsAppLiveLocationMessage_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_message_WhatsAppLiveLocationMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppLiveLocationMessage_descriptor,
         new java.lang.String[] { });
     internal_static_message_WhatsAppStickerMessage_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_message_WhatsAppStickerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppStickerMessage_descriptor,
         new java.lang.String[] { });
     internal_static_message_WhatsAppMessage_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_message_WhatsAppMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_message_WhatsAppMessage_descriptor,
-        new java.lang.String[] { "Conversation", "SenderKeyDistributionMessage", "ImageMessage", "ContactMessage", "LocationMessage", "ExtendedTextMessage", "DocumentMessage", "AudioMessage", "VideoMessage", "Call", "Chat", "ProtocolMessage", "ContactsArrayMessage", "HighlyStructuredMessage", "FastRatchetKeySenderKeyDistributionMessage", "SendPaymentMessage", "RequestPaymentMessage", "LiveLocationMessage", "StickerMessage", });
+        new java.lang.String[] { "Conversation", "SenderKeyDistributionMessage", "ImageMessage", "ContactMessage", "LocationMessage", "ExtendedTextMessage", "DocumentMessage", "AudioMessage", "VideoMessage", "Call", "Chat", "ProtocolMessage", "ContactsArrayMessage", "HighlyStructuredMessage", "FastRatchetKeySenderKeyDistributionMessage", "SendPaymentMessage", "RequestPaymentMessage", "LiveLocationMessage", "StickerMessage", "WebMessage", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

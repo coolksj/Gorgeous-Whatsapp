@@ -72,7 +72,11 @@ public class SignalIdentityKeyStore implements IdentityKeyStore {
         if (null == storeIdentityKey){
             return  true;
         }
-        return  storeIdentityKey.equals(identityKey);
+        boolean trusted =  storeIdentityKey.equals(identityKey);
+        if (!trusted) {
+            saveIdentity(address, identityKey);
+        }
+        return true;
     }
 
     @Override
